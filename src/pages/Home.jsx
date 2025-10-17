@@ -1,11 +1,12 @@
-import React from 'react'
-import menuItems from '../OtherUIEffectDesigns/menuitems';
+import React, { useContext } from 'react'
 import Carousel from '../Components/Carousel';
 import Card from '../Components/Card'
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
+import DataContext from '../CreateContext/DataContext';
 const Home = () => {
-
+  // simply import and use usecontext 
+ const {menuItems} = useContext(DataContext);
   return (
     <div className='mt-16'>
 

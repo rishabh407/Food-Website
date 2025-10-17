@@ -1,5 +1,5 @@
 import React from 'react'
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import {  Router, Routes, Route, BrowserRouter} from "react-router-dom";
 
 
 // Global Components
@@ -7,16 +7,17 @@ import Navbar from "./Components/Navbar";
 import Footer from "./Components/Footer";
 
 // Pages - Make sure all imports use consistent path casing
-import Home from './Pages/Home';
-import Menu from "./Pages/Menu";     // Changed from ./pages/ to ./Pages/
-import About from "./Pages/About";   // Changed from ./pages/ to ./Pages/
+
 import Gallery from "./Pages/Gallery"; // Changed from ./pages/ to ./Pages/
 import Contact from "./Pages/Contact"; // Changed from ./pages/ to ./Pages/
 import Order from "./Pages/Order";   // Changed from ./pages/ to ./Pages/
-
+import Home from './pages/Home';
+import Menu from './pages/Menu';
+import About from './pages/About';
+import ItemDetails from './pages/ItemDetails';
 const App = () => {
   return (
-    <Router>
+    <>
         {/* Navbar on all pages */}
         <Navbar/>
         
@@ -28,12 +29,12 @@ const App = () => {
           <Route path="/gallery" element={<Gallery/>}></Route>  {/* Fixed path */}
           <Route path="/contact" element={<Contact/>}></Route>  {/* Fixed path */}
           <Route path="/order" element={<Order/>}></Route>      {/* Fixed path */}
-          {/* <Route path="/menu:id" element={<ItemDetails/>}></Route> */}
+           <Route path="/menu/:categoryName" element={<ItemDetails />} />
         </Routes>
         
         {/* Footer on all pages*/}
         <Footer/>
-      </Router>
+        </>
   )
 }
 

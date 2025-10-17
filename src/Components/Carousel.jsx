@@ -12,7 +12,7 @@ const Carousel = ({ items }) => {
     const carousel = carouselRef.current;
     if (!carousel) return;
 
-    const scrollSpeed = 5;// pixels per frame
+    const scrollSpeed = 1.5;// pixels per frame
     let reqId;
 
     const scroll = () => {
