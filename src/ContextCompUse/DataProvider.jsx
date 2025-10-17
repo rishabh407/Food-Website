@@ -15,9 +15,9 @@ const menuItems = [
 // ✅ All Subcategories
 const subcategories = {
   Pizza: [
-    { id: 1, title: "Margherita Pizza", category: "Pizza", price: "₹299", image: "src/Images/item-2.webp" },
-    { id: 2, title: "Paneer Makhani Pizza", category: "Pizza", price: "₹249", image: "src/Images/Pizza1.webp" },
-    { id: 3, title: "Farm House", category: "Pizza", price: "₹249", image: "src/Images/Pizza4.webp" },
+    { id: 1, title: "Margherita Pizza", category: "Pizza", price: "₹299", image: "src/Images/Pizza1.webp"},
+    { id: 2, title: "Paneer Makhani Pizza", category: "Pizza", price: "₹249", image: "src/Images/Pizza2.webp" },
+    { id: 3, title: "Farm House", category: "Pizza", price: "₹249", image: "src/Images/Pizza3.webp" },
   ],
   Pasta: [
     { id: 4, title: "Pasta Alfredo", category: "Pasta", price: "₹249", image: "src/Images/pasta.jpg" },
