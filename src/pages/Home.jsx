@@ -1,7 +1,7 @@
 import React, { useContext } from 'react'
 import Carousel from '../Components/Carousel';
 import Card from '../Components/Card'
-import { Link } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import { motion } from "framer-motion";
 import DataContext from '../CreateContext/DataContext';
 const Home = () => {
@@ -25,8 +25,8 @@ const Home = () => {
           Fresh ingredients, tasty meals, and quick service - right to your door.
         </p>
         <div className="buttons space-x-4">
-          <Link to='/menu' className='px-4 py-2 text-white bg-red-500 hover:bg-red-600 transition rounded-lg'>View Menu</Link>
-          <Link to='/order' className='px-4 py-2 text-white bg-gray-800 hover:bg-gray-900 rounded-lg transition'>Order Now</Link>
+          <NavLink to='/menu' className='px-4 py-2 text-white bg-red-500 hover:bg-red-600 transition rounded-lg'>View Menu</NavLink>
+          <NavLink to='/order' className='px-4 py-2 text-white bg-gray-800 hover:bg-gray-900 rounded-lg transition'>Order Now</NavLink>
         </div>
       </motion.section>
 
@@ -122,12 +122,12 @@ const Home = () => {
         transition={{ duration: 1 }}
       >
         <h2 className="text-3xl font-bold mb-8">Hungry? Order Now!</h2>
-        <Link
-          to="/order"
+        <NavLink
+          to="/menu"
           className="bg-white text-red-500 px-6 py-3 rounded-lg font-semibold hover:bg-gray-100 transition"
         >
           Place Your Order
-        </Link>
+        </NavLink>
       </motion.section>
     </div>
   )

@@ -2,12 +2,12 @@ import { motion } from "framer-motion";
 
 const Gallery = () => {
   const images = [
-    { src: "src/Images/gallery-1.webp", alt: "Delicious Pizza" },
-    { src: "src/Images/gallery-2.webp", alt: "Tasty Burgers" },
-    { src: "src/Images/gallery-3.jpg", alt: "Refreshing Drinks" },
-    { src: "src/Images/gallery-4.jpg", alt: "Pasta Love" },
-    { src: "src/Images/gallery-5.jpg", alt: "Sweet Desserts" },
-    { src: "src/Images/gallery-6.webp", alt: "Restaurant Ambience" },
+    { src: "Images/gallery-1.webp", alt: "Delicious Pizza" },
+    { src: "Images/gallery-2.webp", alt: "Tasty Burgers" },
+    { src: "Images/gallery-3.jpg", alt: "Refreshing Drinks" },
+    { src: "Images/gallery-4.jpg", alt: "Pasta Love" },
+    { src: "Images/gallery-5.jpg", alt: "Sweet Desserts" },
+    { src: "Images/gallery-6.webp", alt: "Restaurant Ambience" },
   ];
 
   return (

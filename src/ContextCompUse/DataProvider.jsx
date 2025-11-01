@@ -29,7 +29,6 @@ const subcategories = {
   ],
 };
 const DataProvider = ({children}) => {
-
   return (
    <DataContext.Provider value={{menuItems,subcategories}}>
     {children}

@@ -15,14 +15,20 @@ import Home from './pages/Home';
 import Menu from './pages/Menu';
 import About from './pages/About';
 import ItemDetails from './pages/ItemDetails';
+import ScrollToTop from './OtherUIEffectDesigns/ScrolltoTop';
 const App = () => {
   return (
     <>
+    <BrowserRouter>
+    <ScrollToTop/>
         {/* Navbar on all pages */}
         <Navbar/>
         
         {/* Page Content */}
+         {/* 👇 This ensures every new page starts from the top */}
+        {/* <ScrollToTop/> */}
         <Routes>
+              {/* 👇 This ensures every new page starts from the top */}
           <Route path="/" element={<Home/>}></Route>
           <Route path="/menu" element={<Menu/>}></Route>        {/* Fixed path */}
           <Route path="/about" element={<About/>}></Route>      {/* Fixed path */}
@@ -31,9 +37,11 @@ const App = () => {
           <Route path="/order" element={<Order/>}></Route>      {/* Fixed path */}
            <Route path="/menu/:categoryName" element={<ItemDetails />} />
         </Routes>
+
         
         {/* Footer on all pages*/}
         <Footer/>
+        </BrowserRouter>
         </>
   )
 }

@@ -71,9 +71,9 @@ const About = () => {
         <h2 className="text-3xl font-bold mb-10">Meet Our Team</h2>
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-10 max-w-6xl mx-auto">
           {[
-            { name: "Chef Rahul", role: "Head Chef",image: "src/Images/About-1.webp"  },
-            { name: "Priya Sharma", role: "Pastry Chef",image: "src/Images/About-2.webp"  },
-            { name: "Vikram Singh", role: "Delivery Head",image: "src/Images/About-3.jpg"  },
+            { name: "Chef Rahul", role: "Head Chef",image: "Images/About-1.webp"  },
+            { name: "Priya Sharma", role: "Pastry Chef",image: "Images/About-2.webp"  },
+            { name: "Vikram Singh", role: "Delivery Head",image: "Images/About-3.jpg"  },
           ].map((member, index) => (
             <motion.div
               key={index}
