@@ -62,12 +62,15 @@ const Home = () => {
 
   /* ================= DEBUG: Check API URL ================= */
   useEffect(() => {
-    console.log('🔍 DEBUG INFO:');
+    console.log('🔍 ========== DEBUG INFO ==========');
     console.log('API_BASE_URL:', API_BASE_URL);
     console.log('Env Var (VITE_API_BASE_URL):', import.meta.env.VITE_API_BASE_URL);
     if (featuredItems.length > 0) {
-      console.log('Sample Image URL:', `${API_BASE_URL}${featuredItems[0].image_url}`);
+      const sampleImageUrl = `${API_BASE_URL}${featuredItems[0].image_url}`;
+      console.log('Sample Image URL:', sampleImageUrl);
+      console.log('Test this URL in browser:', sampleImageUrl);
     }
+    console.log('=====================================');
   }, [featuredItems]);
 
   /* ================= INITIAL ARROW STATE ================= */
@@ -254,6 +257,14 @@ const Home = () => {
                     src={`${API_BASE_URL}${item.image_url}`}
                     alt={item.name}
                     className="h-full w-full object-contain p-3 sm:p-4 group-hover:scale-110 transition-transform duration-300"
+                    onError={(e) => {
+                      console.error('❌ Image failed to load:', `${API_BASE_URL}${item.image_url}`);
+                      console.error('API_BASE_URL:', API_BASE_URL);
+                      console.error('item.image_url:', item.image_url);
+                    }}
+                    onLoad={() => {
+                      console.log('✅ Image loaded:', `${API_BASE_URL}${item.image_url}`);
+                    }}
                   />
                 </div>
 
@@ -345,6 +356,9 @@ const Home = () => {
                     src={`${API_BASE_URL}${item.image_url}`}
                     alt={item.name}
                     className="h-full w-full object-contain p-4 sm:p-5 md:p-6 group-hover:scale-110 transition-transform duration-300"
+                    onError={(e) => {
+                      console.error('❌ Image failed to load:', `${API_BASE_URL}${item.image_url}`);
+                    }}
                   />
                 </div>
 
@@ -433,6 +447,9 @@ const Home = () => {
                     src={`${API_BASE_URL}${item.image_url}`}
                     alt={item.name}
                     className="h-full w-full object-contain p-4 sm:p-5 md:p-6 group-hover:scale-110 transition-transform duration-300"
+                    onError={(e) => {
+                      console.error('❌ Image failed to load:', `${API_BASE_URL}${item.image_url}`);
+                    }}
                   />
                 </div>
 
