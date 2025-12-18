@@ -1,6 +1,7 @@
 const express = require("express");
 const cors = require("cors");
 const path = require("path");
+const fs = require("fs");
 const app = express();
 const PORT = process.env.PORT || 5000;
 
@@ -15,6 +16,24 @@ app.use(express.urlencoded({extended:true}));
 
 // Serve static images - use absolute path for production
 const imagesPath = path.join(__dirname, "Images");
+console.log("📁 Images directory path:", imagesPath);
+console.log("📁 __dirname:", __dirname);
+console.log("📁 Images folder exists:", fs.existsSync(imagesPath));
+
+// List files in Images directory for debugging
+if (fs.existsSync(imagesPath)) {
+  try {
+    const files = fs.readdirSync(imagesPath);
+    console.log("📁 Images folder contents:", files);
+    if (fs.existsSync(path.join(imagesPath, "fastfood"))) {
+      const fastfoodFiles = fs.readdirSync(path.join(imagesPath, "fastfood"));
+      console.log("📁 fastfood folder contents:", fastfoodFiles);
+    }
+  } catch (err) {
+    console.error("❌ Error reading Images folder:", err);
+  }
+}
+
 app.use("/images", express.static(imagesPath));
 
 
@@ -385,6 +404,20 @@ app.post("/category/:id",(req,res)=>{
   // const data=req.body;
   const catdata=combinedMenuFavorites[id];
   res.json(catdata);
+})
+
+// Debug route to test image serving
+app.get("/test-image", (req, res) => {
+  const testImagePath = path.join(imagesPath, "fastfood", "paneer_pizza.jpg");
+  const exists = fs.existsSync(testImagePath);
+  res.json({
+    imagesPath: imagesPath,
+    __dirname: __dirname,
+    testImagePath: testImagePath,
+    imageExists: exists,
+    imagesFolderExists: fs.existsSync(imagesPath),
+    currentWorkingDirectory: process.cwd()
+  });
 })
 
 // ✅ Start Server
