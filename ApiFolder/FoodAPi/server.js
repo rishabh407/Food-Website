@@ -1,5 +1,6 @@
 const express = require("express");
 const cors = require("cors");
+const path = require("path");
 const app = express();
 const PORT = process.env.PORT || 5000;
 
@@ -11,7 +12,10 @@ app.use(cors({
 }));
 app.use(express.json());
 app.use(express.urlencoded({extended:true}));
-app.use("/images", express.static("Images"));
+
+// Serve static images - use absolute path for production
+const imagesPath = path.join(__dirname, "Images");
+app.use("/images", express.static(imagesPath));
 
 
 const combinedMenuFavorites = {
