@@ -1,26 +1,29 @@
 import React from 'react'
 import {  Router, Routes, Route, BrowserRouter} from "react-router-dom";
 
-
 // Global Components
+
 import Navbar from "./Components/Navbar";
-import Footer from "./Components/Footer";
-
-// Pages - Make sure all imports use consistent path casing
-
-import Gallery from "./Pages/Gallery"; // Changed from ./pages/ to ./Pages/
-import Contact from "./Pages/Contact"; // Changed from ./pages/ to ./Pages/
-import Order from "./Pages/Order";   // Changed from ./pages/ to ./Pages/
+import Footer from "./Components/Footer";  
 import Home from './pages/Home';
 import Menu from './pages/Menu';
 import About from './pages/About';
-import ItemDetails from './pages/ItemDetails';
+import { Toaster } from "react-hot-toast";
 import ScrollToTop from './OtherUIEffectDesigns/ScrolltoTop';
+import Checkout from './pages/Checkout';
+import Cart from './pages/Cart';
+import Gallery from './pages/Gallery';
+import Wishlist from './pages/Wishlist';
+
 const App = () => {
   return (
     <>
     <BrowserRouter>
-    <ScrollToTop/>
+    <ScrollToTop/>    
+          <Toaster
+        position="top-right"
+        reverseOrder={false}
+      />
         {/* Navbar on all pages */}
         <Navbar/>
         
@@ -30,12 +33,12 @@ const App = () => {
         <Routes>
               {/* 👇 This ensures every new page starts from the top */}
           <Route path="/" element={<Home/>}></Route>
-          <Route path="/menu" element={<Menu/>}></Route>        {/* Fixed path */}
-          <Route path="/about" element={<About/>}></Route>      {/* Fixed path */}
-          <Route path="/gallery" element={<Gallery/>}></Route>  {/* Fixed path */}
-          <Route path="/contact" element={<Contact/>}></Route>  {/* Fixed path */}
-          <Route path="/order" element={<Order/>}></Route>      {/* Fixed path */}
-           <Route path="/menu/:categoryName" element={<ItemDetails />} />
+          <Route path="/menu" element={<Menu/>}></Route>
+          <Route path="/about" element={<About/>}></Route>
+          <Route path="/gallery" element={<Gallery/>}></Route>
+          <Route path="/checkout" element={<Checkout/>}></Route>  
+          <Route path="/cart" element={<Cart/>}></Route>
+          <Route path="/wishlist" element={<Wishlist/>}></Route>     
         </Routes>
 
         
