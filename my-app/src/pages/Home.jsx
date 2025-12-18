@@ -60,6 +60,16 @@ const Home = () => {
   const { data: categoryItemsTandooriAndBreads = [] } = useCategoryItems(categoryTandooriAndBreads);
   const featuredItems = Object.values(allItems).flat().slice(0, 8);
 
+  /* ================= DEBUG: Check API URL ================= */
+  useEffect(() => {
+    console.log('🔍 DEBUG INFO:');
+    console.log('API_BASE_URL:', API_BASE_URL);
+    console.log('Env Var (VITE_API_BASE_URL):', import.meta.env.VITE_API_BASE_URL);
+    if (featuredItems.length > 0) {
+      console.log('Sample Image URL:', `${API_BASE_URL}${featuredItems[0].image_url}`);
+    }
+  }, [featuredItems]);
+
   /* ================= INITIAL ARROW STATE ================= */
   useEffect(() => {
     const beveragesSlider = beveragesSliderRef.current;
