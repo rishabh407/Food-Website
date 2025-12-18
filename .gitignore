@@ -1,17 +1,11 @@
-# Logs
-logs
-*.log
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
-pnpm-debug.log*
-lerna-debug.log*
-
 # Dependencies
-node_modules
-dist
-dist-ssr
-*.local
+node_modules/
+*/node_modules/
+
+# Build outputs
+dist/
+build/
+*.log
 
 # Environment variables
 .env
@@ -19,17 +13,17 @@ dist-ssr
 .env.production
 .env.development
 
-# Editor directories and files
-.vscode/*
-!.vscode/extensions.json
-.idea
-.DS_Store
-*.suo
-*.ntvs*
-*.njsproj
-*.sln
-*.sw?
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
 
-# OS files
-Thumbs.db
+# OS
 .DS_Store
+Thumbs.db
+
+# Project specific
+my-app/dist/
+ApiFolder/FoodAPi/node_modules/
+
