@@ -9,7 +9,7 @@ import Home from './pages/Home';
 import Menu from './pages/Menu';
 import About from './pages/About';
 import { Toaster } from "react-hot-toast";
-import ScrollToTop from './OtherUIEffectDesigns/ScrolltoTop';
+import ScrollToTop from './OtherUIEffectDesigns/ScrollToTop';
 import Checkout from './pages/Checkout';
 import Cart from './pages/Cart';
 import Gallery from './pages/Gallery';
