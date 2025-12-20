@@ -223,7 +223,6 @@ const Menu = () => {
                     {item.description}
                   </p>
                 )}
-
                 {/* SIZE SELECTION */}
                 <div className="flex flex-wrap gap-1.5 sm:gap-2 mb-3 sm:mb-4">
                   {item.pricing.map((p, i) => {

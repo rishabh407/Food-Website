@@ -24,6 +24,25 @@ build/
 Thumbs.db
 
 # Project specific
-my-app/dist/
-ApiFolder/FoodAPi/node_modules/
+frontend/dist/
+backend/node_modules/
+
+# Deployment documentation files
+DEPLOYMENT*.md
+*DEPLOYMENT*.md
+DEPLOYMENT_CHECKLIST.md
+DEPLOYMENT_GUIDE.md
+DEPLOYMENT_STEP_BY_STEP.md
+DEPLOYMENT_SUMMARY.md
+DEPLOYMENT_SUMMARY_VISUAL.md
+frontend/DEPLOYMENT.md
+
+# Image troubleshooting and debug files
+DEBUG_IMAGES.md
+IMAGE_LOADING_FIX.md
+IMAGE_TROUBLESHOOTING.md
+VERCEL_IMAGE_FIX.md
+
+# Quick start guides (if deployment-related)
+QUICK_START.md
 

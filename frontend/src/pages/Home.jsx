@@ -5,7 +5,6 @@ import { useCategoryItems } from "../hooks/useCategoryItems";
 import { useEffect, useRef, useState } from "react";
 import { FaArrowLeft, FaArrowRight } from "react-icons/fa6";
 import { API_BASE_URL } from "../api/axiosInstance";
-
 const Home = () => {
   /* ================= SLIDER CONTROLS ================= */
   const beveragesSliderRef = useRef(null);

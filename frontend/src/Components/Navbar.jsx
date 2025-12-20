@@ -7,6 +7,8 @@ import { useSelector } from "react-redux";
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const location = useLocation();
+  // location provides which current page is opened and returns the path of it.
+  console.log(location.pathname)
   const { Items } = useSelector((state) => state.cart);
   const { Items: wishlistItems } = useSelector((state) => state.wishlist);
   const cartItemCount = Items.reduce((acc, item) => acc + item.quantity, 0);
@@ -72,7 +74,6 @@ const Navbar = () => {
                 </Link>
               );
             })}
-            
             {/* Wishlist Button */}
             <Link
               to="/wishlist"
@@ -113,7 +114,6 @@ const Navbar = () => {
               )}
             </Link>
           </div>
-
           {/* Mobile Toggle */}
           <div className="md:hidden flex items-center gap-2">
             <Link

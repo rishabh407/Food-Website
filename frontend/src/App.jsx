@@ -26,10 +26,6 @@ const App = () => {
       />
         {/* Navbar on all pages */}
         <Navbar/>
-        
-        {/* Page Content */}
-         {/* 👇 This ensures every new page starts from the top */}
-        {/* <ScrollToTop/> */}
         <Routes>
               {/* 👇 This ensures every new page starts from the top */}
           <Route path="/" element={<Home/>}></Route>
@@ -39,9 +35,7 @@ const App = () => {
           <Route path="/checkout" element={<Checkout/>}></Route>  
           <Route path="/cart" element={<Cart/>}></Route>
           <Route path="/wishlist" element={<Wishlist/>}></Route>     
-        </Routes>
-
-        
+        </Routes>        
         {/* Footer on all pages*/}
         <Footer/>
         </BrowserRouter>

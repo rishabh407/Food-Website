@@ -46,33 +46,33 @@ A modern, responsive food ordering website built with React, Redux, and Vite.
 
 2. **Install frontend dependencies**
    ```bash
-   cd my-app
+   cd frontend
    npm install
    ```
 
 3. **Install backend dependencies**
    ```bash
-   cd ../ApiFolder/FoodAPi
+   cd ../backend
    npm install
    ```
 
 4. **Set up environment variables**
    
-   Create a `.env` file in `my-app` folder:
+   Create a `.env` file in `frontend` folder:
    ```
    VITE_API_BASE_URL=http://localhost:5000
    ```
 
 5. **Start the backend server**
    ```bash
-   cd ApiFolder/FoodAPi
+   cd backend
    node server.js
    ```
    Backend will run on `http://localhost:5000`
 
 6. **Start the frontend**
    ```bash
-   cd my-app
+   cd frontend
    npm run dev
    ```
    Frontend will run on `http://localhost:5173`
@@ -80,7 +80,7 @@ A modern, responsive food ordering website built with React, Redux, and Vite.
 ## 📁 Project Structure
 
 ```
-├── my-app/                 # Frontend React application
+├── frontend/               # Frontend React application
 │   ├── src/
 │   │   ├── api/           # API configuration
 │   │   ├── Components/    # Reusable components
@@ -89,10 +89,9 @@ A modern, responsive food ordering website built with React, Redux, and Vite.
 │   │   └── hooks/         # Custom hooks
 │   └── public/            # Static assets
 │
-└── ApiFolder/
-    └── FoodAPi/           # Backend Express server
-        ├── server.js      # Main server file
-        └── Images/         # Food images
+└── backend/                # Backend Express server
+    ├── server.js          # Main server file
+    └── Images/            # Food images
 ```
 
 ## 🌐 Deployment
@@ -108,13 +107,13 @@ See [DEPLOYMENT.md](./DEPLOYMENT.md) for detailed deployment instructions.
 
 ## 📝 Available Scripts
 
-### Frontend (my-app)
+### Frontend (frontend)
 - `npm run dev` - Start development server
 - `npm run build` - Build for production
 - `npm run preview` - Preview production build
 - `npm run lint` - Run ESLint
 
-### Backend (ApiFolder/FoodAPi)
+### Backend (backend)
 - `node server.js` - Start backend server
 
 ## 🎯 Key Features Explained

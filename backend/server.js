@@ -1,7 +1,5 @@
 const express = require("express");
 const cors = require("cors");
-const path = require("path");
-const fs = require("fs");
 const app = express();
 const PORT = process.env.PORT || 5000;
 
@@ -13,29 +11,7 @@ app.use(cors({
 }));
 app.use(express.json());
 app.use(express.urlencoded({extended:true}));
-
-// Serve static images - use absolute path for production
-const imagesPath = path.join(__dirname, "Images");
-console.log("📁 Images directory path:", imagesPath);
-console.log("📁 __dirname:", __dirname);
-console.log("📁 Images folder exists:", fs.existsSync(imagesPath));
-
-// List files in Images directory for debugging
-if (fs.existsSync(imagesPath)) {
-  try {
-    const files = fs.readdirSync(imagesPath);
-    console.log("📁 Images folder contents:", files);
-    if (fs.existsSync(path.join(imagesPath, "fastfood"))) {
-      const fastfoodFiles = fs.readdirSync(path.join(imagesPath, "fastfood"));
-      console.log("📁 fastfood folder contents:", fastfoodFiles);
-    }
-  } catch (err) {
-    console.error("❌ Error reading Images folder:", err);
-  }
-}
-
-// Serve static images - use /Images to match folder name (case-sensitive on Linux)
-app.use("/Images", express.static(imagesPath));
+app.use("/images", express.static("Images"));
 
 
 const combinedMenuFavorites = {
@@ -53,7 +29,7 @@ const combinedMenuFavorites = {
         { size: 'Medium (9")', price: 449 },
         { size: 'Large (12")', price: 699 }
       ],
-      image_url: '/Images/fastfood/paneer_pizza.jpg'
+      image_url: '/images/fastfood/paneer_pizza.jpg'
     },
     {
       id: 'FF002',
@@ -66,7 +42,7 @@ const combinedMenuFavorites = {
         { size: 'Single Patty', price: 199 },
         { size: 'Double Patty', price: 289 }
       ],
-      image_url: '/Images/fastfood/jumbo_chicken_burger.jpg'
+      image_url: '/images/fastfood/jumbo_chicken_burger.jpg'
     },
     {
       id: 'FF003',
@@ -79,7 +55,7 @@ const combinedMenuFavorites = {
         { size: 'Regular', price: 249 },
         { size: 'Large', price: 349 }
       ],
-      image_url: '/Images/fastfood/aglio_olio.jpg'
+      image_url: '/images/fastfood/aglio_olio.jpg'
     },
     {
       id: 'FF004',
@@ -92,7 +68,7 @@ const combinedMenuFavorites = {
         { size: '6 Pcs', price: 120 },
         { size: '10 Pcs', price: 190 }
       ],
-      image_url: '/Images/fastfood/veg_momos.jpg'
+      image_url: '/images/fastfood/veg_momos.jpg'
     },
     {
       id: 'FF005',
@@ -102,7 +78,7 @@ const combinedMenuFavorites = {
       isBestSeller: false,
       // Single price item
       pricing: [{ size: 'Single', price: 180 }],
-      image_url: '/Images/fastfood/tuna_melt.jpg'
+      image_url: '/images/fastfood/tuna_melt.jpg'
     }
   ],
 
@@ -119,7 +95,7 @@ const combinedMenuFavorites = {
         { size: 'Half Portion', price: 349 },
         { size: 'Full Portion', price: 599 }
       ],
-      image_url: '/Images/indian/butter_chicken.jpg'
+      image_url: '/images/indian/butter_chicken.jpg'
     },
     {
       id: 'IC007',
@@ -131,7 +107,7 @@ const combinedMenuFavorites = {
         { size: 'Half Portion', price: 319 },
         { size: 'Full Portion', price: 549 }
       ],
-      image_url: '/Images/indian/shahi_paneer.jpg'
+      image_url: '/images/indian/shahi_paneer.jpg'
     },
     {
       id: 'IC008',
@@ -143,7 +119,7 @@ const combinedMenuFavorites = {
         { size: 'Half Portion', price: 375 },
         { size: 'Full Portion', price: 650 }
       ],
-      image_url: '/Images/indian/chicken_korma.jpg'
+      image_url: '/images/indian/chicken_korma.jpg'
     },
     {
       id: 'IC009',
@@ -155,7 +131,7 @@ const combinedMenuFavorites = {
         { size: 'Half Portion', price: 210 },
         { size: 'Full Portion', price: 350 }
       ],
-      image_url: '/Images/indian/dal_tadka.jpg'
+      image_url: '/images/indian/dal_tadka.jpg'
     }
   ],
 
@@ -171,7 +147,7 @@ const combinedMenuFavorites = {
         { size: 'Single Serve', price: 420 },
         { size: 'Family Pack (4-5)', price: 899 }
       ],
-      image_url: '/Images/biryani/mutton_biryani.jpg'
+      image_url: '/images/biryani/mutton_biryani.jpg'
     },
     {
       id: 'BR011',
@@ -183,7 +159,7 @@ const combinedMenuFavorites = {
         { size: 'Single Serve', price: 290 },
         { size: 'Double Serve', price: 499 }
       ],
-      image_url: '/Images/biryani/egg_biryani.jpg'
+      image_url: '/images/biryani/egg_biryani.jpg'
     },
     {
       id: 'BR012',
@@ -195,7 +171,7 @@ const combinedMenuFavorites = {
         { size: 'Regular', price: 160 },
         { size: 'Large', price: 280 }
       ],
-      image_url: '/Images/biryani/peas_pulao.jpg'
+      image_url: '/images/biryani/peas_pulao.jpg'
     }
   ],
 
@@ -211,7 +187,7 @@ const combinedMenuFavorites = {
         { size: '3 Pcs', price: 299 },
         { size: '6 Pcs', price: 499 }
       ],
-      image_url: '/Images/tandoor/seekh_kebab.jpg'
+      image_url: '/images/tandoor/seekh_kebab.jpg'
     },
     {
       id: 'TB014',
@@ -223,7 +199,7 @@ const combinedMenuFavorites = {
         { size: 'Half Plate', price: 320 },
         { size: 'Full Plate', price: 540 }
       ],
-      image_url: '/Images/tandoor/paneer_tikka_dry.jpg'
+      image_url: '/images/tandoor/paneer_tikka_dry.jpg'
     },
     {
       id: 'TB015',
@@ -232,7 +208,7 @@ const combinedMenuFavorites = {
       isVegetarian: true,
       isBestSeller: true,
       pricing: [{ size: 'Per Piece', price: 45 }],
-      image_url: '/Images/breads/lachha_paratha.jpg'
+      image_url: '/images/breads/lachha_paratha.jpg'
     },
     {
       id: 'TB016',
@@ -241,7 +217,7 @@ const combinedMenuFavorites = {
       isVegetarian: true,
       isBestSeller: false,
       pricing: [{ size: 'Single', price: 80 }],
-      image_url: '/Images/breads/amritsari_kulcha.jpg'
+      image_url: '/images/breads/amritsari_kulcha.jpg'
     }
   ],
   
@@ -254,7 +230,7 @@ const combinedMenuFavorites = {
       isVegetarian: true,
       isBestSeller: true,
       pricing: [{ size: 'Fixed Price', price: 350 }],
-      image_url: '/Images/thali/mini_veg_thali.jpg'
+      image_url: '/images/thali/mini_veg_thali.jpg'
     },
     {
       id: 'TH018',
@@ -263,7 +239,7 @@ const combinedMenuFavorites = {
       isVegetarian: false,
       isBestSeller: true,
       pricing: [{ size: 'Fixed Price', price: 450 }],
-      image_url: '/Images/thali/chicken_meal.jpg'
+      image_url: '/images/thali/chicken_meal.jpg'
     }
   ],
 
@@ -279,7 +255,7 @@ const combinedMenuFavorites = {
         { size: '6 Pcs', price: 90 },
         { size: '8 Pcs', price: 110 }
       ],
-      image_url: '/Images/streetfood/pani_puri.jpg'
+      image_url: '/images/streetfood/pani_puri.jpg'
     },
     {
       id: 'SF020',
@@ -288,7 +264,7 @@ const combinedMenuFavorites = {
       isVegetarian: true,
       isBestSeller: true,
       pricing: [{ size: '2 Pcs', price: 80 }],
-      image_url: '/Images/streetfood/samosa.jpg'
+      image_url: '/images/streetfood/samosa.jpg'
     },
     {
       id: 'SF021',
@@ -297,7 +273,7 @@ const combinedMenuFavorites = {
       isVegetarian: true,
       isBestSeller: true,
       pricing: [{ size: 'Single', price: 50 }],
-      image_url: '/Images/streetfood/vada_pav.jpg'
+      image_url: '/images/streetfood/vada_pav.jpg'
     },
     {
       id: 'SF022',
@@ -306,7 +282,7 @@ const combinedMenuFavorites = {
       isVegetarian: true,
       isBestSeller: false,
       pricing: [{ size: '2 Bhatura + Chole', price: 210 }],
-      image_url: '/Images/streetfood/chole_bhature.jpg'
+      image_url: '/images/streetfood/chole_bhature.jpg'
     }
   ],
 
@@ -319,7 +295,7 @@ const combinedMenuFavorites = {
       isVegetarian: true,
       isBestSeller: false,
       pricing: [{ size: 'Per Slice', price: 140 }],
-      image_url: '/Images/desserts/red_velvet.jpg'
+      image_url: '/images/desserts/red_velvet.jpg'
     },
     {
       id: 'DE024',
@@ -328,7 +304,7 @@ const combinedMenuFavorites = {
       isVegetarian: true,
       isBestSeller: true,
       pricing: [{ size: '2 Pcs', price: 110 }],
-      image_url: '/Images/desserts/gulab_jamun.jpg'
+      image_url: '/images/desserts/gulab_jamun.jpg'
     },
     {
       id: 'DE025',
@@ -337,7 +313,7 @@ const combinedMenuFavorites = {
       isVegetarian: true,
       isBestSeller: true,
       pricing: [{ size: 'Single Serve', price: 175 }],
-      image_url: '/Images/desserts/brownie.jpg'
+      image_url: '/images/desserts/brownie.jpg'
     }
   ],
   
@@ -350,7 +326,7 @@ const combinedMenuFavorites = {
       isVegetarian: true,
       isBestSeller: true,
       pricing: [{ size: 'Regular', price: 60 }],
-      image_url: '/Images/beverages/masala_chai.jpg'
+      image_url: '/images/beverages/masala_chai.jpg'
     },
     {
       id: 'BE027',
@@ -362,7 +338,7 @@ const combinedMenuFavorites = {
         { size: 'Medium', price: 150 },
         { size: 'Large', price: 190 }
       ],
-      image_url: '/Images/beverages/iced_mocha.jpg'
+      image_url: '/images/beverages/iced_mocha.jpg'
     },
     {
       id: 'BE028',
@@ -371,7 +347,7 @@ const combinedMenuFavorites = {
       isVegetarian: true,
       isBestSeller: true,
       pricing: [{ size: 'Regular', price: 130 }],
-      image_url: '/Images/beverages/cold_coffee.jpg'
+      image_url: '/images/beverages/cold_coffee.jpg'
     },
     {
       id: 'BE029',
@@ -383,7 +359,7 @@ const combinedMenuFavorites = {
         { size: 'Regular', price: 110 },
         { size: 'Jumbo', price: 150 }
       ],
-      image_url: '/Images/beverages/sweet_lassi.jpg'
+      image_url: '/images/beverages/sweet_lassi.jpg'
     },
     {
       id: 'BE030',
@@ -392,7 +368,7 @@ const combinedMenuFavorites = {
       isVegetarian: true,
       isBestSeller: false,
       pricing: [{ size: 'Single Serve', price: 70 }],
-      image_url: '/Images/beverages/lime_soda.jpg'
+      image_url: '/images/beverages/lime_soda.jpg'
     }
   ]
 };
@@ -405,20 +381,6 @@ app.post("/category/:id",(req,res)=>{
   // const data=req.body;
   const catdata=combinedMenuFavorites[id];
   res.json(catdata);
-})
-
-// Debug route to test image serving
-app.get("/test-image", (req, res) => {
-  const testImagePath = path.join(imagesPath, "fastfood", "paneer_pizza.jpg");
-  const exists = fs.existsSync(testImagePath);
-  res.json({
-    imagesPath: imagesPath,
-    __dirname: __dirname,
-    testImagePath: testImagePath,
-    imageExists: exists,
-    imagesFolderExists: fs.existsSync(imagesPath),
-    currentWorkingDirectory: process.cwd()
-  });
 })
 
 // ✅ Start Server
