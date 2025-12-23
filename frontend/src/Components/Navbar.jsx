@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { Menu, X, ShoppingCart, Home, UtensilsCrossed, Info, Images, Heart } from "lucide-react";
+import { Menu, X, ShoppingCart, Home, UtensilsCrossed, Info, Images, Heart,DoorOpen,UserPlus } from "lucide-react";
 import { motion } from "framer-motion";
 import { useSelector } from "react-redux";
 
-const Navbar = () => {
+const Navbar = ({ onLoginClick, onRegisterClick }) => {
   const [isOpen, setIsOpen] = useState(false);
   const location = useLocation();
   // location provides which current page is opened and returns the path of it.
@@ -19,8 +19,9 @@ const Navbar = () => {
     { name: "Menu", path: "/menu", icon: UtensilsCrossed },
     { name: "About", path: "/about", icon: Info },
     { name: "Gallery", path: "/gallery", icon: Images },
+    // { name: "Login", path: "/login", icon: DoorOpen },
+    // { name: "Register", path: "/register", icon: UserPlus},
   ];
-
   const isActive = (path) => location.pathname === path;
 
   return (
@@ -113,6 +114,26 @@ const Navbar = () => {
                 </motion.span>
               )}
             </Link>
+
+            {/* AUTH BUTTONS */}
+<div className="flex items-center gap-2 ml-2">
+  <button
+    onClick={onLoginClick}
+    className="px-4 py-2 rounded-lg flex items-center gap-2 text-gray-700 hover:text-red-600 hover:bg-gray-50 transition"
+  >
+    <DoorOpen size={18} />
+    Login
+  </button>
+
+  <button
+    onClick={onRegisterClick}
+    className="px-4 py-2 rounded-lg flex items-center gap-2 bg-gradient-to-r from-red-500 to-orange-500 text-white rounded-lg hover:opacity-90 transition"
+  >
+    <UserPlus size={18} />
+    Register
+  </button>
+</div>
+
           </div>
           {/* Mobile Toggle */}
           <div className="md:hidden flex items-center gap-2">
@@ -194,6 +215,31 @@ const Navbar = () => {
               </span>
             )}
           </Link>
+          {/* AUTH BUTTONS - MOBILE */}
+<div className="pt-2 border-t border-gray-200 space-y-2">
+  <button
+    onClick={() => {
+      onLoginClick();
+      setIsOpen(false);
+    }}
+    className="w-full flex items-center gap-3 px-4 py-3 rounded-lg text-gray-700 hover:bg-gray-50"
+  >
+    <DoorOpen size={20} />
+    Login
+  </button>
+
+  <button
+    onClick={() => {
+      onRegisterClick();
+      setIsOpen(false);
+    }}
+    className="w-full flex items-center gap-3 px-4 py-3 rounded-lg bg-gradient-to-r from-red-500 to-orange-500 text-white"
+  >
+    <UserPlus size={20} />
+    Register
+  </button>
+</div>
+
         </div>
       </motion.div>
     </motion.nav>
