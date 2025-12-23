@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import {  Router, Routes, Route, BrowserRouter} from "react-router-dom";
+import {  Routes, Route, BrowserRouter} from "react-router-dom";
 
 // Global Components
 import Navbar from "./Components/Navbar";
@@ -13,8 +13,6 @@ import Checkout from './pages/Checkout';
 import Cart from './pages/Cart';
 import Gallery from './pages/Gallery';
 import Wishlist from './pages/Wishlist';
-import Register from './pages/Register';
-import Login from './pages/Login';
 
 // 👇 MODAL
 import AuthModal from './Components/AuthModal';
