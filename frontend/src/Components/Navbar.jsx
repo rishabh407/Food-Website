@@ -3,8 +3,14 @@ import { Link, useLocation } from "react-router-dom";
 import { Menu, X, ShoppingCart, Home, UtensilsCrossed, Info, Images, Heart,DoorOpen,UserPlus } from "lucide-react";
 import { motion } from "framer-motion";
 import { useSelector } from "react-redux";
+import { useAuth } from "../Context/AuthContext";
 
 const Navbar = ({ onLoginClick, onRegisterClick }) => {
+  
+  // Take Data From the User So That We Can Display it while login. Take It From Context.
+ 
+  const {userdata,logout}=useAuth();
+
   const [isOpen, setIsOpen] = useState(false);
   const location = useLocation();
   // location provides which current page is opened and returns the path of it.
@@ -13,7 +19,6 @@ const Navbar = ({ onLoginClick, onRegisterClick }) => {
   const { Items: wishlistItems } = useSelector((state) => state.wishlist);
   const cartItemCount = Items.reduce((acc, item) => acc + item.quantity, 0);
   const wishlistCount = wishlistItems.length;
-
   const navLinks = [
     { name: "Home", path: "/", icon: Home },
     { name: "Menu", path: "/menu", icon: UtensilsCrossed },
@@ -116,23 +121,39 @@ const Navbar = ({ onLoginClick, onRegisterClick }) => {
             </Link>
 
             {/* AUTH BUTTONS */}
-<div className="flex items-center gap-2 ml-2">
-  <button
-    onClick={onLoginClick}
-    className="px-4 py-2 rounded-lg flex items-center gap-2 text-gray-700 hover:text-red-600 hover:bg-gray-50 transition"
-  >
-    <DoorOpen size={18} />
-    Login
-  </button>
+            {userdata ? (
+  <div className="flex items-center gap-2 ml-2">
+    <span className="font-semibold text-gray-700">
+      Hi, {userdata.name}
+    </span>
 
-  <button
-    onClick={onRegisterClick}
-    className="px-4 py-2 rounded-lg flex items-center gap-2 bg-gradient-to-r from-red-500 to-orange-500 text-white rounded-lg hover:opacity-90 transition"
-  >
-    <UserPlus size={18} />
-    Register
-  </button>
-</div>
+    <button
+      onClick={logout}
+      className="px-4 py-2 rounded-lg bg-gray-100 hover:bg-gray-200 transition"
+    >
+      Logout
+    </button>
+  </div>
+) : (
+  <div className="flex items-center gap-2 ml-2">
+    <button
+      onClick={onLoginClick}
+      className="px-4 py-2 rounded-lg flex items-center gap-2 text-gray-700 hover:text-red-600 hover:bg-gray-50 transition"
+    >
+      <DoorOpen size={18} />
+      Login
+    </button>
+
+    <button
+      onClick={onRegisterClick}
+      className="px-4 py-2 rounded-lg flex items-center gap-2 bg-gradient-to-r from-red-500 to-orange-500 text-white hover:opacity-90 transition"
+    >
+      <UserPlus size={18} />
+      Register
+    </button>
+  </div>
+)}
+
 
           </div>
           {/* Mobile Toggle */}
@@ -216,29 +237,54 @@ const Navbar = ({ onLoginClick, onRegisterClick }) => {
             )}
           </Link>
           {/* AUTH BUTTONS - MOBILE */}
-<div className="pt-2 border-t border-gray-200 space-y-2">
-  <button
-    onClick={() => {
-      onLoginClick();
-      setIsOpen(false);
-    }}
-    className="w-full flex items-center gap-3 px-4 py-3 rounded-lg text-gray-700 hover:bg-gray-50"
-  >
-    <DoorOpen size={20} />
-    Login
-  </button>
+          <div className="pt-2 border-t border-gray-200 space-y-2">
+  {userdata ? (
+    <>
+      {/* USER INFO */}
+      <div className="px-4 py-3 rounded-lg bg-gray-50 text-gray-700 font-semibold">
+        👋 Hi, {userdata.name}
+      </div>
 
-  <button
-    onClick={() => {
-      onRegisterClick();
-      setIsOpen(false);
-    }}
-    className="w-full flex items-center gap-3 px-4 py-3 rounded-lg bg-gradient-to-r from-red-500 to-orange-500 text-white"
-  >
-    <UserPlus size={20} />
-    Register
-  </button>
+      {/* LOGOUT */}
+      <button
+        onClick={() => {
+        logout();
+          setIsOpen(false);
+        }}
+        className="w-full flex items-center gap-3 px-4 py-3 rounded-lg text-red-600 hover:bg-red-50"
+      >
+        Logout
+      </button>
+    </>
+  ) : (
+    <>
+      {/* LOGIN */}
+      <button
+        onClick={() => {
+          onLoginClick();
+          setIsOpen(false);
+        }}
+        className="w-full flex items-center gap-3 px-4 py-3 rounded-lg text-gray-700 hover:bg-gray-50"
+      >
+        <DoorOpen size={20} />
+        Login
+      </button>
+
+      {/* REGISTER */}
+      <button
+        onClick={() => {
+          onRegisterClick();
+          setIsOpen(false);
+        }}
+        className="w-full flex items-center gap-3 px-4 py-3 rounded-lg bg-gradient-to-r from-red-500 to-orange-500 text-white"
+      >
+        <UserPlus size={20} />
+        Register
+      </button>
+    </>
+  )}
 </div>
+
 
         </div>
       </motion.div>

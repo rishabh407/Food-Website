@@ -41,11 +41,12 @@ const App = () => {
           setAuthType("register");
           setShowAuthModal(true);
         }}
-      />
-
-        <Routes>
+      /><Routes>
           <Route path="/" element={<Home/>}></Route>
-          <Route path="/menu" element={<Menu/>}></Route>
+          <Route path="/menu" element={<Menu onLoginClick={() => {
+          setAuthType("login");
+          setShowAuthModal(true);
+        }}/>}></Route>
           <Route path="/about" element={<About/>}></Route>
           <Route path="/gallery" element={<Gallery/>}></Route>
           <Route path="/checkout" element={<Checkout/>}></Route>  

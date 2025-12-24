@@ -8,6 +8,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { addToCart } from "../redux/cartSlice";
 import { addToWishlist, removeFromWishlist } from "../redux/wishlistSlice";
 import { API_BASE_URL } from "../api/axiosInstance";
+import { useAuth } from "../Context/AuthContext";
 
 const CATEGORIES = [
   { label: "All", value: null },
@@ -21,7 +22,9 @@ const CATEGORIES = [
   { label: "Beverages", value: "Beverages" },
 ];
 
-const Menu = () => {
+const Menu = ({ onLoginClick }) => {
+  const { userdata} = useAuth();
+
   const [category, setCategory] = useState(null);
   const [search, setSearch] = useState("");
   const [selectedSize, setSelectedSize] = useState({});
@@ -45,7 +48,7 @@ const Menu = () => {
   }, [category, categoryItems, flatAllItems, search]);
 
   const dispatch = useDispatch();
-  
+
   const handleCart = (item) => {
     const selectedIndex = selectedSize[item.id] ?? 0;
     const selectedPricing = item.pricing[selectedIndex];
@@ -58,12 +61,9 @@ const Menu = () => {
       price: selectedPricing.price,
     };
     dispatch(addToCart(cartItem));
-    toast.success(
-      `${item.name} (${selectedPricing.size}) added to cart`,
-      {
-        duration: 2000,
-      }
-    );
+    toast.success(`${item.name} (${selectedPricing.size}) added to cart`, {
+      duration: 2000,
+    });
   };
 
   const handleWishlist = (item) => {
@@ -113,7 +113,9 @@ const Menu = () => {
           >
             🍽️
           </motion.div>
-          <p className="text-xl font-semibold text-gray-600">Loading delicious menu...</p>
+          <p className="text-xl font-semibold text-gray-600">
+            Loading delicious menu...
+          </p>
         </motion.div>
       </div>
     );
@@ -133,7 +135,8 @@ const Menu = () => {
             Our Menu
           </h1>
           <p className="text-gray-600 text-lg max-w-2xl mx-auto">
-            Explore our wide range of freshly prepared dishes, made with love and the finest ingredients
+            Explore our wide range of freshly prepared dishes, made with love
+            and the finest ingredients
           </p>
         </div>
 
@@ -200,16 +203,27 @@ const Menu = () => {
                   className="h-full w-full object-contain p-3 sm:p-4 group-hover:scale-110 transition-transform duration-300"
                 />
                 <motion.button
-                  onClick={() => handleWishlist(item)}
+                  onClick={() => {
+                    if (!userdata) {
+                        onLoginClick();
+                        return;
+                      }
+                      handleWishlist(item)}}
                   className={`absolute top-2 right-2 sm:top-4 sm:right-4 w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-white/90 backdrop-blur-sm shadow-lg flex items-center justify-center transition-opacity hover:bg-red-500 hover:text-white ${
-                    isItemInWishlist(item) ? "opacity-100 bg-red-500 text-white" : "opacity-0 group-hover:opacity-100"
+                    isItemInWishlist(item)
+                      ? "opacity-100 bg-red-500 text-white"
+                      : "opacity-0 group-hover:opacity-100"
                   }`}
                   whileHover={{ scale: 1.1 }}
                   whileTap={{ scale: 0.9 }}
                 >
-                  <FaHeart 
-                    className={isItemInWishlist(item) ? "text-white" : "text-red-500 group-hover:text-white"} 
-                    size={14} 
+                  <FaHeart
+                    className={
+                      isItemInWishlist(item)
+                        ? "text-white"
+                        : "text-red-500 group-hover:text-white"
+                    }
+                    size={14}
                   />
                 </motion.button>
               </div>
@@ -251,7 +265,6 @@ const Menu = () => {
                     );
                   })}
                 </div>
-
                 {/* PRICE */}
                 <div className="flex items-center justify-between mb-3 sm:mb-4">
                   <div>
@@ -266,6 +279,10 @@ const Menu = () => {
                 <div className="mt-auto flex gap-2 sm:gap-3">
                   <motion.button
                     onClick={(e) => {
+                      if (!userdata) {
+                        onLoginClick();
+                        return;
+                      }
                       e.preventDefault();
                       handleCart(item);
                     }}
@@ -274,12 +291,16 @@ const Menu = () => {
                     className="flex-1 py-2.5 sm:py-3 rounded-lg sm:rounded-xl text-xs sm:text-sm font-bold text-white bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700 transition-all shadow-lg hover:shadow-xl flex items-center justify-center gap-1.5 sm:gap-2"
                   >
                     <FaShoppingCart size={12} />
-                    <span className="hidden xs:inline">Add to Cart</span>
+                    {/* <span className="hidden xs:inline">Add to Cart</span> */}
                     <span className="xs:hidden">Add</span>
                   </motion.button>
-
                   <motion.button
-                    onClick={() => handleWishlist(item)}
+                    onClick={() => {
+                      if (!userdata) {
+                        onLoginClick();
+                        return;
+                      }
+                      handleWishlist(item)}}
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
                     className={`px-3 sm:px-4 py-2.5 sm:py-3 rounded-lg sm:rounded-xl text-xs sm:text-sm font-semibold transition-all border ${
@@ -305,8 +326,12 @@ const Menu = () => {
           className="text-center py-20"
         >
           <div className="text-6xl mb-4">🔍</div>
-          <h3 className="text-2xl font-bold text-gray-800 mb-2">No items found</h3>
-          <p className="text-gray-600">Try adjusting your search or category filter</p>
+          <h3 className="text-2xl font-bold text-gray-800 mb-2">
+            No items found
+          </h3>
+          <p className="text-gray-600">
+            Try adjusting your search or category filter
+          </p>
         </motion.div>
       )}
     </section>

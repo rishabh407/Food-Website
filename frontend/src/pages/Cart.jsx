@@ -1,16 +1,25 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { addToCart, removeFromCart, clearCart } from "../redux/cartSlice";
 import { Link, useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { FaTrash, FaPlus, FaMinus, FaShoppingBag } from "react-icons/fa";
 import { API_BASE_URL } from "../api/axiosInstance";
+import { useAuth } from "../Context/AuthContext";
 
 const Cart = () => {
+  const { userdata} = useAuth();
   const { Items, totalsum } = useSelector((state) => state.cart);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const totalItems = Items.reduce((acc, item) => acc + item.quantity, 0);
+  useEffect(()=>{
+    if(!userdata)
+    {
+      dispatch(clearCart());
+      return;
+    }
+  },[userdata])
 
   return (
     <section className="min-h-screen bg-gradient-to-b from-gray-50 via-white to-gray-50 px-4 md:px-10 py-20 mt-20">

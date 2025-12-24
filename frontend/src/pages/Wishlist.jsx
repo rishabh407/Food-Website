@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { removeFromWishlist, clearWishlist } from "../redux/wishlistSlice";
 import { addToCart } from "../redux/cartSlice";
@@ -7,8 +7,10 @@ import { motion, AnimatePresence } from "framer-motion";
 import { FaTrash, FaShoppingCart, FaHeart, FaHeartBroken } from "react-icons/fa";
 import toast from "react-hot-toast";
 import { API_BASE_URL } from "../api/axiosInstance";
+import { useAuth } from "../Context/AuthContext";
 
 const Wishlist = () => {
+    const {userdata}=useAuth();
   const { Items } = useSelector((state) => state.wishlist);
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -27,6 +29,14 @@ const Wishlist = () => {
     dispatch(clearWishlist());
     toast.success("Wishlist cleared");
   };
+  
+  useEffect(()=>{
+    if(!userdata)
+    {
+      dispatch(clearWishlist());
+      return;
+    }
+  },[userdata])
 
   return (
     <section className="min-h-screen bg-gradient-to-b from-gray-50 via-white to-gray-50 px-4 md:px-10 py-20 mt-20">

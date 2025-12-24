@@ -1,11 +1,69 @@
 import { X, DoorOpen, UserPlus } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
-
+import { useState } from "react";
+import toast from "react-hot-toast";
+import axios from "axios";
+import { useAuth } from "../Context/AuthContext";
 const AuthModal = ({ isOpen, type, setAuthType, onClose }) => {
-
+  // Data stored in global context.
+  // Get data of cart and wishlist for a particular user.
+  // const wishlistfordb=localStorage.getItem("wishlistitems");
+  // const cartitemsproduct=localStorage.getItem("cartitemsproduct");
+  const {login}=useAuth();
   if (!isOpen) return null;
   const isLogin = type === "login";
+//   For login data
+  const [reform, resetform] = useState({
+    name:"",
+    email:"",
+    password:"",
+  })
+//   For register data 
+   const [loform, setloform] = useState({
+    email:"",
+    password:"",
+   })
+   const handleformlogin=async(e)=>{
+      e.preventDefault();
+    //   console.log(loform.email,loform.password);
+    try{
+         const response=await axios.post("http://localhost:5000/login",loform);
+         toast.success("User Login Successfully 🎉");
+         login(response.data.user);
+         onClose();
+    }
+    catch(error){
+      const msg = error.response?.data?.message || "Something went wrong";
+      toast.error(msg); 
+    }
+   }
+   const handleformregister=async(e)=>{
+    e.preventDefault();
+    try{
+        const response=await axios.post("http://localhost:5000/register",reform);
+        toast.success("User Registered Successfully 🎉");
+        setAuthType("login");    
+   }
+   catch(error){
+    const msg = error.response?.data?.message || "Something went wrong";
+    toast.error(msg); 
+   }
+   }
+   const handlechangeforregister=(e)=>{
+         resetform({...reform,[e.target.name]:e.target.value})
+   }
+   const handlechangeforlogin=(e)=>{
+      setloform({...loform,[e.target.name]:e.target.value})
+   }   
 
+// Button For Submitting  
+ 
+// const loginbutton=()=>{
+  
+//    }
+//    const registerbutton=()=>{
+
+//    }
   return (
     <AnimatePresence>
       {isOpen && (
@@ -63,23 +121,35 @@ flex items-center justify-center → center modal
             </div>
 
             {/* FORM */}
-            <form className="space-y-4">
+            <form className="space-y-4" onSubmit={isLogin?handleformlogin:handleformregister}>
               {!isLogin && (
                 <input
                   type="text"
+                  name="name"
+                  value={reform.name}
+                  onChange={handlechangeforregister}
                   placeholder="Full Name"
+                  required
                   className="w-full px-4 py-3 border rounded-xl focus:outline-none focus:ring-2 focus:ring-red-500"
                 />
               )}
               <input
                 type="email"
                 placeholder="Email Address"
+                name="email"
+                required
+                value={isLogin?loform.email:reform.email}
+                onChange={isLogin?handlechangeforlogin:handlechangeforregister}
                 className="w-full px-4 py-3 border rounded-xl focus:outline-none focus:ring-2 focus:ring-red-500"
               />
 
               <input
                 type="password"
                 placeholder="Password"
+                name="password"
+                required
+                value={isLogin?loform.password:reform.password}
+                onChange={isLogin?handlechangeforlogin:handlechangeforregister}
                 className="w-full px-4 py-3 border rounded-xl focus:outline-none focus:ring-2 focus:ring-red-500"
               />
 
@@ -103,7 +173,6 @@ flex items-center justify-center → center modal
     {type === "login" ? "Register" : "Login"}
   </span>
 </p>
-
           </motion.div>
         </div>
       )}

@@ -3,7 +3,6 @@ const initialState = {
   Items: JSON.parse(localStorage.getItem("cartitemsproduct")) || [],
   totalsum: JSON.parse(localStorage.getItem("totalsum")) || 0,
 };
-
 const cartSlice = createSlice({
   name: "cart",
   initialState,
