@@ -29,6 +29,8 @@ const AuthModal = ({ isOpen, type, setAuthType, onClose }) => {
     try{
          const response=await axios.post("http://localhost:5000/login",loform);
          toast.success("User Login Successfully 🎉");
+         localStorage.setItem("foodtoken",response.data.token);
+         console.log(response.data.token);
          login(response.data.user);
          onClose();
     }

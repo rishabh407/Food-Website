@@ -7,10 +7,8 @@ import { useAuth } from "../Context/AuthContext";
 
 const Navbar = ({ onLoginClick, onRegisterClick }) => {
   
-  // Take Data From the User So That We Can Display it while login. Take It From Context.
- 
+  // Take Data From the User So That We Can Display it while login. Take It From Context. 
   const {userdata,logout}=useAuth();
-
   const [isOpen, setIsOpen] = useState(false);
   const location = useLocation();
   // location provides which current page is opened and returns the path of it.
@@ -119,7 +117,6 @@ const Navbar = ({ onLoginClick, onRegisterClick }) => {
                 </motion.span>
               )}
             </Link>
-
             {/* AUTH BUTTONS */}
             {userdata ? (
   <div className="flex items-center gap-2 ml-2">

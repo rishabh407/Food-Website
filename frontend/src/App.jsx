@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import {  Routes, Route, BrowserRouter} from "react-router-dom";
 
 // Global Components
@@ -16,10 +16,20 @@ import Wishlist from './pages/Wishlist';
 
 // 👇 MODAL
 import AuthModal from './Components/AuthModal';
+import { useAuth } from './Context/AuthContext';
 
 const App = () => {
+  const { userdata } = useAuth(); // 👈 auth state
   const [showAuthModal, setShowAuthModal] = useState(true);
   const [authType, setAuthType] = useState("login"); // login | register
+  
+  // 🔥 CLOSE MODAL AUTOMATICALLY AFTER LOGIN
+  useEffect(() => {
+    if (userdata) {
+      setShowAuthModal(false);
+    }
+  }, [userdata]);
+  
   return (
     <>
     <BrowserRouter>
@@ -53,7 +63,6 @@ const App = () => {
           <Route path="/cart" element={<Cart/>}></Route>
           <Route path="/wishlist" element={<Wishlist/>}></Route>     
         </Routes>        
-
                 {/* AUTH MODAL (OVER HOME) */}
       <AuthModal
         isOpen={showAuthModal}

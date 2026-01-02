@@ -12,7 +12,7 @@ export const AuthProvider=({children})=>{
     },[]);
     const login=(userdt)=>{
        setuserdata(userdt);
-       localStorage.setItem("userdata",JSON.stringify(userdata));
+       localStorage.setItem("userdata",JSON.stringify(userdt));
     }
     const logout=()=>{
         setuserdata(null);
