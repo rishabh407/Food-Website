@@ -5,10 +5,7 @@ import toast from "react-hot-toast";
 import axios from "axios";
 import { useAuth } from "../Context/AuthContext";
 const AuthModal = ({ isOpen, type, setAuthType, onClose }) => {
-  // Data stored in global context.
-  // Get data of cart and wishlist for a particular user.
-  // const wishlistfordb=localStorage.getItem("wishlistitems");
-  // const cartitemsproduct=localStorage.getItem("cartitemsproduct");
+
   const {login}=useAuth();
   if (!isOpen) return null;
   const isLogin = type === "login";
@@ -58,25 +55,11 @@ const AuthModal = ({ isOpen, type, setAuthType, onClose }) => {
       setloform({...loform,[e.target.name]:e.target.value})
    }   
 
-// Button For Submitting  
- 
-// const loginbutton=()=>{
-  
-//    }
-//    const registerbutton=()=>{
-
-//    }
   return (
     <AnimatePresence>
       {isOpen && (
         <div className="fixed inset-0 z-[100] flex items-center justify-center">
           
-        {/* What this does:
-fixed → stays on screen
-inset-0 → covers full screen
-z-[100] → appears above navbar & home
-flex items-center justify-center → center modal
-👉 This makes modal full-screen overlay. */}
 
           {/* BACKDROP */}
           <motion.div
