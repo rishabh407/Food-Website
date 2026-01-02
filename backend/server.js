@@ -2,7 +2,8 @@ import express from "express";
 import cors from "cors";
 import UrlRoutes from './Routes/UrlRoutes.js';
 import ConnectDb from "./DatabaseConnectivity/Database.js";
-
+import dotenv from "dotenv";
+dotenv.config();
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -19,8 +20,6 @@ app.use("/images", express.static("Images"));
 
 // Database Connectivity
 ConnectDb();
-
-
 const combinedMenuFavorites = {
   // --- 1. Global Fast Food (Burgers, Pizzas, Sandwiches) ---
   'FastFoodFavorites': [
