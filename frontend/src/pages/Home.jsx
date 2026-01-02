@@ -57,7 +57,12 @@ const Home = () => {
   const { data: allItems = {}, isLoading } = useAllItems();
   const { data: categoryItems = [] } = useCategoryItems(category);
   const { data: categoryItemsTandooriAndBreads = [] } = useCategoryItems(categoryTandooriAndBreads);
-  const featuredItems = Object.values(allItems).flat().slice(0, 8);
+
+  const featuredItems = Array.isArray(allItems) ? allItems.slice(0, 8) : [];
+
+  
+console.log(allItems);
+console.log(categoryItems);
 
   /* ================= DEBUG: Check API URL ================= */
   useEffect(() => {

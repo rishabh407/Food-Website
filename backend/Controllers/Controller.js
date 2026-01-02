@@ -5,7 +5,7 @@ export const registeruser=async(req,res)=>{
     try{
        const {name,email,password}=req.body;
        const useremailcheck=await User.findOne({email});
-       if(useremailcheck)
+       if(useremailcheck.email)
           {
             return res.status(409).json({
                message:"User already registered with this email",

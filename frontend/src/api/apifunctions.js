@@ -7,13 +7,12 @@ export const getmenuItems=async()=>{
   catch(err){
     console.log(err);
     return [];
-  }
-    
+  }    
 }
 
 export const getmenuItemsbyid=async(id)=>{
   try{
-    const response =await api.post(`/category/${id}`);
+    const response =await api.get(`/category/${id}`);
     return response.data;
   }  
   catch(err){

@@ -9,7 +9,6 @@ import { addToCart } from "../redux/cartSlice";
 import { addToWishlist, removeFromWishlist } from "../redux/wishlistSlice";
 import { API_BASE_URL } from "../api/axiosInstance";
 import { useAuth } from "../Context/AuthContext";
-
 const CATEGORIES = [
   { label: "All", value: null },
   { label: "Fast Food", value: "FastFoodFavorites" },
