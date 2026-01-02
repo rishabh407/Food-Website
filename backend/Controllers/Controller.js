@@ -1,11 +1,12 @@
-import { User } from "../Model/Model.js";
 import bcrypt from "bcrypt";
 import { generatetoken } from "../GenerateToken/token.js";
+import User from "../Model/User.js";
+import Product from "../Model/Product.js";
 export const registeruser=async(req,res)=>{
     try{
        const {name,email,password}=req.body;
        const useremailcheck=await User.findOne({email});
-       if(useremailcheck.email)
+       if(useremailcheck)
           {
             return res.status(409).json({
                message:"User already registered with this email",
@@ -70,3 +71,22 @@ export const loginuser=async(req,res)=>{
           });
         }
 }
+
+export const getallitemsdata=async(req,res)=>{
+  const data=await Product.find();
+  res.json(data);
+}
+
+export const categorywisedata = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const data = await Product.find({ category: id });
+
+    res.json(data);
+  } catch (error) {
+    res.status(500).json({
+      message: "Failed to fetch category products",
+    });
+  }
+};
