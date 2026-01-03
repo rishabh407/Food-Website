@@ -27,6 +27,18 @@ const cartSlice = createSlice({
       );
     },
 
+    setCartFromBackend: (state, action) => {
+      state.Items = action.payload.items.map((item) => ({
+        _id: item.product._id,
+        name: item.product.name,
+        image_url: item.product.image_url,
+        size: item.size,
+        price: item.price,
+        quantity: item.quantity,
+      }));
+      state.totalsum = action.payload.totalsum;
+    },
+
     removeFromCart: (state, action) => {
       const item = action.payload;
 
@@ -58,5 +70,5 @@ const cartSlice = createSlice({
   },
 });
 
-export const { addToCart, removeFromCart, clearCart } = cartSlice.actions;
+export const { addToCart, removeFromCart,setCartFromBackend, clearCart } = cartSlice.actions;
 export default cartSlice.reducer;

@@ -9,6 +9,7 @@ import { addToCart } from "../redux/cartSlice";
 import { addToWishlist, removeFromWishlist } from "../redux/wishlistSlice";
 import { API_BASE_URL } from "../api/axiosInstance";
 import { useAuth } from "../Context/AuthContext";
+import { addToCartAsync } from "../redux/cartActions";
 const CATEGORIES = [
   { label: "All", value: null },
   { label: "Fast Food", value: "FastFoodFavorites" },
@@ -48,22 +49,23 @@ const Menu = ({ onLoginClick }) => {
 
   const dispatch = useDispatch();
 
-  const handleCart = (item) => {
-    const selectedIndex = selectedSize[item.id] ?? 0;
-    const selectedPricing = item.pricing[selectedIndex];
+const handleCart = (item) => {
+  const selectedIndex = selectedSize[item._id] ?? 0;
+  const selectedPricing = item.pricing[selectedIndex];
 
-    const cartItem = {
-      id: item.id,
-      name: item.name,
-      image_url: item.image_url,
-      size: selectedPricing.size,
-      price: selectedPricing.price,
-    };
-    dispatch(addToCart(cartItem));
-    toast.success(`${item.name} (${selectedPricing.size}) added to cart`, {
-      duration: 2000,
-    });
+  const cartItem = {
+    _id: item._id,                 // ✅ MongoDB id
+    name: item.name,
+    image_url: item.image_url,
+    size: selectedPricing.size,
+    price: selectedPricing.price,
   };
+
+  dispatch(addToCartAsync(cartItem));
+
+  toast.success(`${item.name} added to cart`);
+};
+
 
   const handleWishlist = (item) => {
     const selectedIndex = selectedSize[item.id] ?? 0;

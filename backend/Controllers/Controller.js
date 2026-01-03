@@ -2,6 +2,7 @@ import bcrypt from "bcrypt";
 import { generatetoken } from "../GenerateToken/token.js";
 import User from "../Model/User.js";
 import Product from "../Model/Product.js";
+import Cart from "../Model/Cart.js";
 export const registeruser=async(req,res)=>{
     try{
        const {name,email,password}=req.body;
@@ -88,5 +89,75 @@ export const categorywisedata = async (req, res) => {
     res.status(500).json({
       message: "Failed to fetch category products",
     });
+  }
+};
+
+export const additemtocart = async (req, res) => {
+  try {
+    const userId = req.user._id;
+    const { productId, size } = req.body;
+
+    const product = await Product.findById(productId);
+    if (!product) {
+      return res.status(404).json({ message: "Product not found" });
+    }
+
+    const priceObj = product.pricing.find((p) => p.size === size);
+    if (!priceObj) {
+      return res.status(400).json({ message: "Invalid size" });
+    }
+
+    let cart = await Cart.findOne({ user: userId });
+    if (!cart) {
+      cart = await Cart.create({ user: userId, items: [] });
+    }
+
+    const existingItem = cart.items.find(
+      (item) =>
+        item.product.toString() === productId &&
+        item.size === size
+    );
+
+    if (existingItem) {
+      existingItem.quantity += 1;
+    } else {
+      cart.items.push({
+        product: productId,
+        size,
+        price: priceObj.price,
+        quantity: 1,
+      });
+    }
+
+    await cart.save();
+
+    res.json({ message: "Item added to cart", cart });
+  } catch (error) {
+    res.status(500).json({ message: "Add to cart failed" });
+  }
+};
+
+export const getUserCart = async (req, res) => {
+  try {
+    const userId = req.user._id;
+
+    const cart = await Cart.findOne({ user: userId })
+      .populate("items.product"); // optional but recommended
+
+    if (!cart) {
+      return res.json({ items: [], totalsum: 0 });
+    }
+
+    const totalsum = cart.items.reduce(
+      (acc, item) => acc + item.price * item.quantity,
+      0
+    );
+
+    res.json({
+      items: cart.items,
+      totalsum,
+    });
+  } catch (error) {
+    res.status(500).json({ message: "Failed to fetch cart" });
   }
 };

@@ -4,10 +4,13 @@ import { useState } from "react";
 import toast from "react-hot-toast";
 import axios from "axios";
 import { useAuth } from "../Context/AuthContext";
+import { fetchCartAsync } from "../redux/cartActions";
+import { useDispatch } from "react-redux";
 const AuthModal = ({ isOpen, type, setAuthType, onClose }) => {
 
   const {login}=useAuth();
   if (!isOpen) return null;
+  const dispatch=useDispatch();
   const isLogin = type === "login";
 //   For login data
   const [reform, resetform] = useState({
@@ -20,22 +23,35 @@ const AuthModal = ({ isOpen, type, setAuthType, onClose }) => {
     email:"",
     password:"",
    })
-   const handleformlogin=async(e)=>{
-      e.preventDefault();
-    //   console.log(loform.email,loform.password);
-    try{
-         const response=await axios.post("http://localhost:5000/login",loform);
-         toast.success("User Login Successfully 🎉");
-         localStorage.setItem("foodtoken",response.data.token);
-         console.log(response.data.token);
-         login(response.data.user);
-         onClose();
-    }
-    catch(error){
-      const msg = error.response?.data?.message || "Something went wrong";
-      toast.error(msg); 
-    }
-   }
+
+  const handleformlogin = async (e) => {
+  e.preventDefault();
+
+  try {
+    const response = await axios.post(
+      "http://localhost:5000/login",
+      loform
+    );
+
+    toast.success("User Login Successfully 🎉");
+
+    // 1️⃣ Save token
+    localStorage.setItem("foodtoken", response.data.token);
+
+    // 2️⃣ Save user in context
+    login(response.data.user);
+
+    // 3️⃣ 🔥 FETCH CART FROM BACKEND
+    dispatch(fetchCartAsync());
+
+    // 4️⃣ Close modal
+    onClose();
+  } catch (error) {
+    const msg = error.response?.data?.message || "Something went wrong";
+    toast.error(msg);
+  }
+};
+
    const handleformregister=async(e)=>{
     e.preventDefault();
     try{

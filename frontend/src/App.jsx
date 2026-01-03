@@ -17,6 +17,8 @@ import Wishlist from './pages/Wishlist';
 // 👇 MODAL
 import AuthModal from './Components/AuthModal';
 import { useAuth } from './Context/AuthContext';
+import { useDispatch } from 'react-redux';
+import { fetchCartAsync } from './redux/cartActions';
 
 const App = () => {
   const { userdata } = useAuth(); // 👈 auth state
@@ -24,12 +26,16 @@ const App = () => {
   const [authType, setAuthType] = useState("login"); // login | register
   
   // 🔥 CLOSE MODAL AUTOMATICALLY AFTER LOGIN
+
+const dispatch = useDispatch();
+
   useEffect(() => {
     if (userdata) {
       setShowAuthModal(false);
+      dispatch(fetchCartAsync());
     }
   }, [userdata]);
-  
+
   return (
     <>
     <BrowserRouter>
