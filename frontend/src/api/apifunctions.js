@@ -1,7 +1,7 @@
 import api from "./axiosInstance";
 export const getmenuItems=async()=>{
   try{
-    const response =await api.get("/");
+    const response =await api.get("/products");
     return response.data;
   }  
   catch(err){

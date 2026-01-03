@@ -13,7 +13,10 @@ const PORT = process.env.PORT || 5000;
 // Allow CORS from all origins (update with specific domains in production)
 
 app.use(cors({
-  origin: true, // Allow all origins - update with specific domains for production
+  origin: [
+    "http://localhost:5173",
+    "https://food-website-dun-beta.vercel.app/"
+  ], // Allow all origins - update with specific domains for production
   credentials: true
 }));
 app.use(express.json());

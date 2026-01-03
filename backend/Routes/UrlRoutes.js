@@ -5,7 +5,7 @@ import { Authenticate } from "../Middlewares/Auth.js";
 
 const router=new express.Router();
 
-router.get("/",getallitemsdata);
+router.get("/products",getallitemsdata);
 
 router.get("/category/:id",categorywisedata)
 
