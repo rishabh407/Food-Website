@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react'
 import {  Routes, Route, BrowserRouter} from "react-router-dom";
-
 // Global Components
 import Navbar from "./Components/Navbar";
 import Footer from "./Components/Footer";  

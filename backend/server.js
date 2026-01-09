@@ -4,6 +4,7 @@ import UrlRoutes from './Routes/UrlRoutes.js';
 import ConnectDb from "./DatabaseConnectivity/Database.js";
 import dotenv from "dotenv";
 import { seedProducts } from "./seed/seedProducts.js";
+import cookieParser from "cookie-parser";
 dotenv.config();
 
 const app = express();
@@ -34,6 +35,7 @@ app.use(cors({
 app.use(express.json());
 app.use(express.urlencoded({extended:true}));
 app.use("/images", express.static("Images"));
+app.use(cookieParser());
 
 // Database Connectivity
 

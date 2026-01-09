@@ -1,8 +1,9 @@
 import bcrypt from "bcrypt";
-import { generatetoken } from "../GenerateToken/token.js";
+import { generateRefreshToken, generatetoken } from "../GenerateToken/token.js";
 import User from "../Model/User.js";
 import Product from "../Model/Product.js";
 import Cart from "../Model/Cart.js";
+import Session from "../Model/Session.js";
 export const registeruser=async(req,res)=>{
     try{
        const {name,email,password}=req.body;
@@ -44,7 +45,7 @@ export const loginuser=async(req,res)=>{
           const user=await User.findOne({email});
           if(!user){
              return res.status(404).json({
-                message: "User not registered",
+                message: "invalid credentials",
              })
           }
 
@@ -52,25 +53,50 @@ export const loginuser=async(req,res)=>{
         const isMatch = await bcrypt.compare(password, user.password);
         if (!isMatch) {
           return res.status(401).json({
-            message: "Invalid password",
+            message: "Invalid credentials",
           });
         }
-       const token=generatetoken(user);
+      //  Access Token
+        const accesstoken=generatetoken(user);
+        //  Refresh Token
+        const refreshtoken=generateRefreshToken();       
+              //  Save refresh token in the database.
+              await Session.create({
+                userId:user._id,
+                refreshToken:refreshtoken,
+                expiresAt:new Date(Date.now()+7*24*60*60*1000)
+              })
+       
+  // Set cookies
+  res.cookie("accessToken", accesstoken, {
+    httpOnly: true,
+    secure: true,
+    sameSite: "none",
+    maxAge: 15 * 60 * 1000
+  });
+
+        // Store it in the cookie 
+        res.cookie("refreshtoken",refreshtoken,{
+         httpOnly:true,
+         secure:true,
+         sameSite:"none",   
+        })
        // 3️⃣ Success
         return res.status(200).json({
           message: "Login successful",
           user:{
             name: user.name,
             email: user.email,
-          },
-          token,
+          }
          });
        }
-       catch (error) {
-          return res.status(500).json({
-            message: "Login failed",
-          });
-        }
+catch (error) {
+  console.error("Login Error:", error); // server logs only
+
+  return res.status(500).json({
+    message: "Something went wrong. Please try again."
+  });
+}
 }
 
 export const getallitemsdata=async(req,res)=>{
@@ -159,5 +185,58 @@ export const getUserCart = async (req, res) => {
     });
   } catch (error) {
     res.status(500).json({ message: "Failed to fetch cart" });
+  }
+};
+
+// export const logout=async(req,res)=>{
+//    const refreshToken = req.cookies.refreshtoken;
+//    console.log(refreshToken);
+//   await Session.deleteOne({ refreshToken });
+
+//   res.clearCookie("accessToken", {
+//     httpOnly: true,
+//     secure: true,
+//     sameSite: "none"
+//   });
+
+//   res.clearCookie("refreshtoken", {
+//     httpOnly: true,
+//     secure: true,
+//     sameSite: "none"
+//   });
+
+//   res.json({ success: true });
+// }
+export const logout = async (req, res) => {
+  try {
+    const refreshToken = req.cookies.refreshtoken;
+     console.log(refreshToken);
+    if (refreshToken) {
+      await Session.deleteOne({ refreshToken });
+    }
+
+    res.clearCookie("accessToken", {
+      httpOnly: true,
+      secure: true,
+      sameSite: "none",
+      maxAge: 0
+    });
+
+    res.clearCookie("refreshtoken", {
+      httpOnly: true,
+      secure: true,
+      sameSite: "none",
+      maxAge: 0
+    });
+
+    return res.status(200).json({
+      message: "Logout successful"
+    });
+
+  } catch (error) {
+    console.error("Logout error:", error);
+    return res.status(500).json({
+      message: "Logout failed"
+    });
   }
 };
