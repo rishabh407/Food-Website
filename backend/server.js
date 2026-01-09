@@ -12,14 +12,25 @@ const PORT = process.env.PORT || 5000;
 // ✅ Middleware
 // Allow CORS from all origins (update with specific domains in production)
 
+// app.use(cors({
+//   origin:"*",
+//   // origin: [
+//   //   "http://localhost:5173",
+//   //   "https://food-website-dun-beta.vercel.app/"
+//   // ], // Allow all origins - update with specific domains for production
+//   credentials: true
+// }));
+
 app.use(cors({
-  origin:"*",
-  // origin: [
-  //   "http://localhost:5173",
-  //   "https://food-website-dun-beta.vercel.app/"
-  // ], // Allow all origins - update with specific domains for production
+  origin: [
+    "http://localhost:5173",
+    "https://food-website-git-main-rishabh407s-projects.vercel.app"
+  ],
+  methods: ["GET", "POST", "PUT", "DELETE"],
   credentials: true
 }));
+
+
 app.use(express.json());
 app.use(express.urlencoded({extended:true}));
 app.use("/images", express.static("Images"));
