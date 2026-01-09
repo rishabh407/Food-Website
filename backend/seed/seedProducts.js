@@ -15,10 +15,8 @@ export const seedProducts = async () => {
     const data=await Product.find();
     // console.log(data);
     console.log("✅ Products saved into MongoDB successfully");
-    process.exit();
   } catch (error) {
     console.error("❌ Failed to save products:", error);
-    process.exit(1);
   }
 };
 
