@@ -25,14 +25,30 @@ app.use("/images", express.static("Images"));
 
 // Database Connectivity
 
-ConnectDb();
+// ConnectDb();
 
 // ✅ Routes
 
-app.use("/",UrlRoutes)
+// app.use("/",UrlRoutes)
 
 // ✅ Start Server
-
-app.listen(PORT, () => {
+const startServer=async()=>{
+  try{
+    // Connect Database
+    await ConnectDb();
+    // Auto-seed products (Only If empty)
+    await seedProducts();
+    // Routes
+    app.use("/",UrlRoutes);
+    // Start listening 
+    app.listen(PORT, () => {
   console.log(`✅ Server running on http://localhost:${PORT}`);
 });
+  }catch(error){
+    console.error("❌Server failed to start",error.message);
+    process.exit(1);
+  }
+};
+startServer();
+
+
