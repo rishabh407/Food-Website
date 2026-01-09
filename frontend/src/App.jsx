@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import {  Routes, Route, BrowserRouter} from "react-router-dom";
+import {  Routes, Route, BrowserRouter, useFetcher} from "react-router-dom";
 // Global Components
 import Navbar from "./Components/Navbar";
 import Footer from "./Components/Footer";  
@@ -18,9 +18,9 @@ import AuthModal from './Components/AuthModal';
 import { useAuth } from './Context/AuthContext';
 import { useDispatch } from 'react-redux';
 import { fetchCartAsync } from './redux/cartActions';
-
+import axios from 'axios';
 const App = () => {
-  const { userdata } = useAuth(); // 👈 auth state
+  const { userdata,setuserdata } = useAuth(); // 👈 auth state
   const [showAuthModal, setShowAuthModal] = useState(true);
   const [authType, setAuthType] = useState("login"); // login | register
   
@@ -29,12 +29,31 @@ const App = () => {
 const dispatch = useDispatch();
 
   useEffect(() => {
+
     if (userdata) {
       setShowAuthModal(false);
       dispatch(fetchCartAsync());
     }
   }, [userdata]);
 
+// useEffect(()=>{
+//     const restoreAuth=async()=>{
+//       try{
+//           const res=await axios.get("http://localhost:5000/me",
+//         { withCredentials: true }
+//       );
+//       setuserdata(res.data.user);
+//       if (userdata) {
+//       setShowAuthModal(false);
+//       dispatch(fetchCartAsync());
+//     }
+//       }
+//       catch(error){
+//            console.log(error.message);      
+//       }
+//     }
+//     restoreAuth();
+//   },[]);
   return (
     <>
     <BrowserRouter>
@@ -76,7 +95,6 @@ const dispatch = useDispatch();
         // 👈 ADD THIS
         onClose={() => setShowAuthModal(false)}
       />
-
         {/* Footer on all pages*/}
         <Footer/>
         </BrowserRouter>

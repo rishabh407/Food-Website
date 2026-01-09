@@ -1,6 +1,7 @@
+import axios from "axios";
 import { createContext, useContext, useEffect, useState } from "react";
 import toast from "react-hot-toast";
-import axios from "axios";
+
 const AuthContext=createContext(null);
 export const AuthProvider=({children})=>{
     const [userdata, setuserdata] = useState(null);
@@ -13,8 +14,12 @@ export const AuthProvider=({children})=>{
     // },[]);
     const login=(userdt)=>{
        setuserdata(userdt);
-    //    localStorage.setItem("userdata",JSON.stringify(userdt));
+      //  localStorage.setItem("userdata",JSON.stringify(userdt));
     }
+    // const logout=()=>{
+    //     setuserdata(null);
+    //     // localStorage.removeItem("userdata");
+    // }
     const logout = async () => {
   try {
     await axios.post(
@@ -22,7 +27,6 @@ export const AuthProvider=({children})=>{
       {},
       { withCredentials: true } // 🔥 REQUIRED
     );
-
     // Clear frontend state
     setuserdata(null);
     toast.success("User Logout Successfully");
