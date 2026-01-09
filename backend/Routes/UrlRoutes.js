@@ -18,5 +18,9 @@ router.post("/logout",logout);
 router.post("/cart/add",Authenticate,additemtocart);
 
 router.get("/cart", Authenticate, getUserCart); // ✅ NEW
+// router.get("/me", (req, res) => {
+//   console.log("Cookies:", req.cookies);
+//   res.send("ok");
+// });
 router.get("/me",authenticate,getMe);
 export default router;

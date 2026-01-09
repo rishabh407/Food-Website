@@ -28,32 +28,31 @@ const App = () => {
 
 const dispatch = useDispatch();
 
-  useEffect(() => {
+  // useEffect(() => {
 
-    if (userdata) {
+  // //   if (userdata) {
+  // //     setShowAuthModal(false);
+      // dispatch(fetchCartAsync());
+  // //   }
+  // // }, [userdata]);
+
+useEffect(()=>{
+    const restoreAuth=async()=>{
+      try{
+          const res=await axios.get("http://localhost:5000/me",
+        { withCredentials: true }
+      );
+      console.log(res.data.user);
+      setuserdata(res.data.user);
       setShowAuthModal(false);
-      dispatch(fetchCartAsync());
+    //  dispatch(fetchCartAsync());
+      }
+      catch(error){
+           console.log(error.message);      
+      }
     }
-  }, [userdata]);
-
-// useEffect(()=>{
-//     const restoreAuth=async()=>{
-//       try{
-//           const res=await axios.get("http://localhost:5000/me",
-//         { withCredentials: true }
-//       );
-//       setuserdata(res.data.user);
-//       if (userdata) {
-//       setShowAuthModal(false);
-//       dispatch(fetchCartAsync());
-//     }
-//       }
-//       catch(error){
-//            console.log(error.message);      
-//       }
-//     }
-//     restoreAuth();
-//   },[]);
+    restoreAuth();
+  },[setuserdata]);
   return (
     <>
     <BrowserRouter>

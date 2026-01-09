@@ -4,6 +4,7 @@ import User from "../Model/User.js";
 import Product from "../Model/Product.js";
 import Cart from "../Model/Cart.js";
 import Session from "../Model/Session.js";
+const isProduction = process.env.NODE_ENV === "production";
 export const registeruser=async(req,res)=>{
     try{
        const {name,email,password}=req.body;
@@ -70,16 +71,16 @@ export const loginuser=async(req,res)=>{
   // Set cookies
   res.cookie("accessToken", accesstoken, {
     httpOnly: true,
-    secure: true,
-    sameSite: "none",
+  secure: isProduction,
+  sameSite: isProduction ? "none" : "lax",
     maxAge: 15 * 60 * 1000
   });
 
         // Store it in the cookie 
         res.cookie("refreshtoken",refreshtoken,{
          httpOnly:true,
-         secure:true,
-         sameSite:"none",   
+  secure: isProduction,
+  sameSite: isProduction ? "none" : "lax",
         })
        // 3️⃣ Success
         return res.status(200).json({
@@ -217,15 +218,15 @@ export const logout = async (req, res) => {
 
     res.clearCookie("accessToken", {
       httpOnly: true,
-      secure: true,
-      sameSite: "none",
+      secure: isProduction,
+      sameSite: isProduction ? "none" : "lax",
       maxAge: 0
     });
 
     res.clearCookie("refreshtoken", {
       httpOnly: true,
-      secure: true,
-      sameSite: "none",
+  secure: isProduction,
+  sameSite: isProduction ? "none" : "lax",
       maxAge: 0
     });
 

@@ -10,18 +10,6 @@ dotenv.config();
 const app = express();
 const PORT = process.env.PORT || 5000;
 
-// ✅ Middleware
-// Allow CORS from all origins (update with specific domains in production)
-
-// app.use(cors({
-//   origin:"*",
-//   // origin: [
-//   //   "http://localhost:5173",
-//   //   "https://food-website-dun-beta.vercel.app/"
-//   // ], // Allow all origins - update with specific domains for production
-//   credentials: true
-// }));
-
 app.use(cors({
   origin: [
     "http://localhost:5173",
@@ -34,8 +22,8 @@ app.use(cors({
 
 app.use(express.json());
 app.use(express.urlencoded({extended:true}));
-app.use("/images", express.static("Images"));
 app.use(cookieParser());
+app.use("/images", express.static("Images"));
 
 // Database Connectivity
 
@@ -64,5 +52,6 @@ const startServer=async()=>{
   }
 };
 startServer();
+
 
 
