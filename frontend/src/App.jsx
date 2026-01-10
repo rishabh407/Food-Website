@@ -18,28 +18,18 @@ import AuthModal from './Components/AuthModal';
 import { useAuth } from './Context/AuthContext';
 import { useDispatch } from 'react-redux';
 import { fetchCartAsync } from './redux/cartActions';
-import axios from 'axios';
+import api from './api/axiosInstance';
 const App = () => {
   const { userdata,setuserdata } = useAuth(); // 👈 auth state
   const [showAuthModal, setShowAuthModal] = useState(true);
   const [authType, setAuthType] = useState("login"); // login | register
   
   // 🔥 CLOSE MODAL AUTOMATICALLY AFTER LOGIN
-
-const dispatch = useDispatch();
-
-  // useEffect(() => {
-
-  // //   if (userdata) {
-  // //     setShowAuthModal(false);
-      // dispatch(fetchCartAsync());
-  // //   }
-  // // }, [userdata]);
-
+// const dispatch = useDispatch();
 useEffect(()=>{
     const restoreAuth=async()=>{
       try{
-          const res=await axios.get("http://localhost:5000/me",
+          const res=await api.get("/me",
         { withCredentials: true }
       );
       console.log(res.data.user);

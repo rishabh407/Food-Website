@@ -2,10 +2,10 @@ import { X, DoorOpen, UserPlus } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useState } from "react";
 import toast from "react-hot-toast";
-import axios from "axios";
 import { useAuth } from "../Context/AuthContext";
-import { fetchCartAsync } from "../redux/cartActions";
+// import { fetchCartAsync } from "../redux/cartActions";
 import { useDispatch } from "react-redux";
+import api from "../api/axiosInstance";
 const AuthModal = ({ isOpen, type, setAuthType, onClose }) => {
 
   const {login}=useAuth();
@@ -28,14 +28,8 @@ const AuthModal = ({ isOpen, type, setAuthType, onClose }) => {
   e.preventDefault();
 
   try {
-    const response = await axios.post(
-      "http://localhost:5000/login",
-      loform,
-          { withCredentials: true } // 🔥 REQUIRED To Store Cookies In The Browser.
-    );
-
+    const response = await api.post("/login",loform);
     toast.success("User Login Successfully 🎉");
-
     // // 1️⃣ Save token
     // localStorage.setItem("foodtoken", response.data.token);
 
@@ -56,7 +50,7 @@ const AuthModal = ({ isOpen, type, setAuthType, onClose }) => {
    const handleformregister=async(e)=>{
     e.preventDefault();
     try{
-        const response=await axios.post("http://localhost:5000/register",reform);
+        const response=await api.post("/register",reform);
         toast.success("User Registered Successfully 🎉");
         setAuthType("login");    
    }

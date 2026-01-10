@@ -60,15 +60,12 @@ const handleCart = (item) => {
     size: selectedPricing.size,
     price: selectedPricing.price,
   };
-
   dispatch(addToCartAsync(cartItem));
-
   toast.success(`${item.name} added to cart`);
 };
 
-
   const handleWishlist = (item) => {
-    const selectedIndex = selectedSize[item.id] ?? 0;
+    const selectedIndex = selectedSize[item._id] ?? 0;
     const selectedPricing = item.pricing[selectedIndex];
 
     const wishlistItem = {
@@ -93,7 +90,7 @@ const handleCart = (item) => {
   };
 
   const isItemInWishlist = (item) => {
-    const selectedIndex = selectedSize[item.id] ?? 0;
+    const selectedIndex = selectedSize[item._id] ?? 0;
     const selectedPricing = item.pricing[selectedIndex];
     return wishlistItems.some(
       (w) => w.id === item.id && w.size === selectedPricing.size
@@ -241,7 +238,7 @@ const handleCart = (item) => {
                 {/* SIZE SELECTION */}
                 <div className="flex flex-wrap gap-1.5 sm:gap-2 mb-3 sm:mb-4">
                   {item.pricing.map((p, i) => {
-                    const isSelected = (selectedSize[item.id] ?? 0) === i;
+                    const isSelected = (selectedSize[item._id] ?? 0) === i;
 
                     return (
                       <motion.button
@@ -249,7 +246,7 @@ const handleCart = (item) => {
                         onClick={() =>
                           setSelectedSize((prev) => ({
                             ...prev,
-                            [item.id]: i,
+                            [item._id]: i,
                           }))
                         }
                         whileHover={{ scale: 1.05 }}
@@ -271,11 +268,10 @@ const handleCart = (item) => {
                   <div>
                     <span className="text-xs text-gray-500">Starting at</span>
                     <p className="text-xl sm:text-2xl font-bold bg-gradient-to-r from-red-600 to-orange-500 bg-clip-text text-transparent">
-                      ₹{item.pricing[selectedSize[item.id] ?? 0].price}
+                      ₹{item.pricing[selectedSize[item._id] ?? 0].price}
                     </p>
                   </div>
                 </div>
-
                 {/* ACTION BUTTONS */}
                 <div className="mt-auto flex gap-2 sm:gap-3">
                   <motion.button

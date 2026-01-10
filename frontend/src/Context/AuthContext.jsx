@@ -1,6 +1,6 @@
-import axios from "axios";
-import { createContext, useContext, useEffect, useState } from "react";
+import { createContext, useContext, useState } from "react";
 import toast from "react-hot-toast";
+import api from "../api/axiosInstance";
 
 const AuthContext=createContext(null);
 export const AuthProvider=({children})=>{
@@ -22,8 +22,7 @@ export const AuthProvider=({children})=>{
     // }
     const logout = async () => {
   try {
-    await axios.post(
-      "http://localhost:5000/logout",
+    await api.post("/logout",
       {},
       { withCredentials: true } // 🔥 REQUIRED
     );

@@ -31,7 +31,7 @@ app.use("/images", express.static("Images"));
 
 // ✅ Routes
 
-// app.use("/",UrlRoutes)
+app.use("/",UrlRoutes)
 
 // ✅ Start Server
 const startServer=async()=>{
@@ -39,9 +39,8 @@ const startServer=async()=>{
     // Connect Database
     await ConnectDb();
     // Auto-seed products (Only If empty)
+    
     await seedProducts();
-    // Routes
-    app.use("/",UrlRoutes);
     // Start listening 
     app.listen(PORT, () => {
   console.log(`✅ Server running on http://localhost:${PORT}`);

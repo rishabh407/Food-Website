@@ -1,26 +1,24 @@
 import api from "../api/axiosInstance";
 import { addToCart, removeFromCart, clearCart, setCartFromBackend } from "./cartSlice";
-
+// import axios from "axios";
 
 /* ADD TO CART (Backend + Redux) */
 
 export const addToCartAsync = (item) => async (dispatch) => {
   try {
-    const token = localStorage.getItem("foodtoken");
-
-    await api.post(
-      "/cart/add",
-      {
-        productId: item._id,   // ✅ MongoDB _id
-        size: item.size,
-      },
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      }
-    );
-
+    // const token = localStorage.getItem("foodtoken");
+    // await api.post(
+    //   "/cart/add",
+    //   {
+    //     productId: item._id,   // ✅ MongoDB _id
+    //     size: item.size,
+    //   }
+    //   // {
+    //   //   headers: {
+    //   //     Authorization:`Bearer ${token}`,
+    //   //   },
+    //   // }
+    // );
     dispatch(addToCart(item)); // optimistic UI update
   } catch (error) {
     console.error("Add to cart failed", error);
