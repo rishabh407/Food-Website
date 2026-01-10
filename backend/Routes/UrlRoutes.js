@@ -16,6 +16,7 @@ router.post("/login",loginuser);
 router.post("/logout",logout);
 
 router.post("/cart/add",authenticate,additemtocart);
+// router.post("/cart/remove",authenticate,removefromcart);
 router.get("/cart", authenticate, getUserCart); // ✅ NEW
 router.get("/me",authenticate,getMe);
 export default router;

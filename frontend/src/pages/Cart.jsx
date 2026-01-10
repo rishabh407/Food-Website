@@ -1,11 +1,12 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { addToCart, removeFromCart, clearCart } from "../redux/cartSlice";
+import { removeFromCart, clearCart, addToCart } from "../redux/cartSlice";
 import { Link, useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { FaTrash, FaPlus, FaMinus, FaShoppingBag } from "react-icons/fa";
 import { API_BASE_URL } from "../api/axiosInstance";
 import { useAuth } from "../Context/AuthContext";
+import { addToCartAsync } from "../redux/cartActions";
 
 const Cart = () => {
   const { userdata} = useAuth();
@@ -20,7 +21,9 @@ const Cart = () => {
       return;
     }
   },[userdata])
-
+  // const handleCart=(item)=>{
+  //   dispatch(addToCartAsync(item))
+  // }
   return (
     <section className="min-h-screen bg-gradient-to-b from-gray-50 via-white to-gray-50 px-4 md:px-10 py-20 mt-20">
       <div className="max-w-6xl mx-auto">
@@ -138,7 +141,8 @@ const Cart = () => {
                               </span>
 
                               <motion.button
-                                onClick={() => dispatch(addToCart(item))}
+                                // onClick={()=>handleCart(item)}
+                                onClick={()=>dispatch(addToCartAsync(item))}
                                 whileHover={{ scale: 1.1 }}
                                 whileTap={{ scale: 0.9 }}
                                 className="w-7 h-7 sm:w-8 sm:h-8 rounded-lg bg-white hover:bg-green-50 text-green-600 font-bold shadow-sm transition-colors flex items-center justify-center"
