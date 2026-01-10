@@ -1,6 +1,6 @@
 import express from "express";
 import bcrypt from "bcrypt";
-import {  additemtocart, categorywisedata, getallitemsdata, getMe, getUserCart, loginuser, logout, registeruser, removeFromCart } from "../Controllers/Controller.js";
+import {  additemtocart, categorywisedata, clearcart, getallitemsdata, getMe, getUserCart, loginuser, logout, registeruser, removeFromCart } from "../Controllers/Controller.js";
 import { Authenticate } from "../Middlewares/Auth.js";
 import { authenticate } from "../Middlewares/authenticatemiddleware.js";
 
@@ -17,6 +17,7 @@ router.post("/logout",logout);
 
 router.post("/cart/add",authenticate,additemtocart);
 router.post("/cart/remove",authenticate,removeFromCart);
+router.delete("/cart/clear",authenticate,clearcart);
 router.get("/cart", authenticate, getUserCart); // ✅ NEW
 router.get("/me",authenticate,getMe);
 export default router;

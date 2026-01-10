@@ -363,3 +363,27 @@ export const removeFromCart=async(req,res)=>{
     res.status(500).json({ message: "Remove from cart failed" });
   }
 }
+
+export const clearcart = async (req, res) => {
+  try {
+    const userId = req.user.id;
+
+    await Cart.deleteOne({ user: userId });
+
+    res.json({
+      items: [],
+      totalsum: 0,
+      message: "Cart cleared successfully",
+    });
+  } catch (error) {
+    console.error("Clear cart error:", error);
+    res.status(500).json({ message: "Failed to clear cart" });
+  }
+};
+
+
+// export const clearcart=async(req,res)=>{
+//    const userId=req.user.id; 
+//    await Cart.deleteOne({user:userId});
+
+// } 
