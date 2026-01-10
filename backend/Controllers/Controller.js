@@ -281,3 +281,85 @@ export const getMe=async(req,res)=>{
     user
    });
 };
+
+// export const removeFromCart=async(req,res)=>{
+//    try{ 
+//   const userId=req.user.id; // persons user id .
+//      const { productId, size } = req.body;
+//     const product = await Product.findById(productId);
+//     if (!product) {
+//       return res.status(404).json({ message: "Product not found" });
+//     }
+//    const priceObj = product.pricing.find((p) => p.size === size);
+//     if (!priceObj) {
+//       return res.status(400).json({ message: "Invalid size" });
+//     }  
+//     let cart = await Cart.findOne({ user: userId });// after finding product from the cart.
+//     // Check their existance in the cart . 
+//        const existingItem = cart.items.find(
+//       (item) =>
+//         item.product.toString() === productId &&
+//         item.size === size
+//     );
+//     if(existingItem.quantity>1)
+//       {
+//         existingItem.quantity-=1;
+//       }
+//       else{
+//         await cart.items.deleteOne({productId});
+//       }
+//      await cart.save();
+    
+//         res.json({ message: "Item Removed from cart ", cart });
+//   } catch (error) {
+//     res.status(500).json({ message: "Remove from cart failed" });
+//   }
+// }
+export const removeFromCart=async(req,res)=>{
+   try{ 
+  const userId=req.user.id; // persons user id .
+     const { productId, size } = req.body;
+    const product = await Product.findById(productId);
+    if (!product) {
+      return res.status(404).json({ message: "Product not found" });
+    }
+   const priceObj = product.pricing.find((p) => p.size === size);
+    if (!priceObj) {
+      return res.status(400).json({ message: "Invalid size" });
+    }  
+    let cart = await Cart.findOne({ user: userId });// after finding product from the cart.
+    // Check their existance in the cart . 
+       const existingItemIndex = cart.items.findIndex(
+      (item) =>
+        item.product.toString() === productId &&
+        item.size === size
+    );
+    if(existingItemIndex===-1)
+      {
+        return res.status(404).json({ message: "Item not found in cart" });
+      }
+      if(cart.items[existingItemIndex].quantity>1)
+      {
+        cart.items[existingItemIndex].quantity -= 1;
+      }
+      else{
+        // 🔥 FIXED LINE
+      cart.items.splice(existingItemIndex, 1);
+      }
+          // 🔥 DELETE CART IF EMPTY
+    if (cart.items.length === 0) {
+      await Cart.deleteOne({ user: userId });
+      return res.json({
+        items: [],
+        totalsum: 0,
+        message: "Cart cleared",
+      });
+    }
+    
+     await cart.save();
+    
+        res.json({ message: "Item Removed from cart ", cart });
+  } catch (error) {
+    res.status(500).json({ message: "Remove from cart failed" });
+  }
+}

@@ -6,7 +6,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { FaTrash, FaPlus, FaMinus, FaShoppingBag } from "react-icons/fa";
 import { API_BASE_URL } from "../api/axiosInstance";
 import { useAuth } from "../Context/AuthContext";
-import { addToCartAsync } from "../redux/cartActions";
+import { addToCartAsync, removeFromCartAsync } from "../redux/cartActions";
 
 const Cart = () => {
   const { userdata} = useAuth();
@@ -128,7 +128,7 @@ const Cart = () => {
                           <div className="flex sm:flex-col items-center sm:items-end justify-between sm:justify-center gap-2 mt-2 sm:mt-0">
                             <div className="flex items-center gap-2 sm:gap-3 bg-gray-50 rounded-lg sm:rounded-xl p-1.5 sm:p-2">
                               <motion.button
-                                onClick={() => dispatch(removeFromCart(item))}
+                                onClick={() => dispatch(removeFromCartAsync(item))}
                                 whileHover={{ scale: 1.1 }}
                                 whileTap={{ scale: 0.9 }}
                                 className="w-7 h-7 sm:w-8 sm:h-8 rounded-lg bg-white hover:bg-red-50 text-red-600 font-bold shadow-sm transition-colors flex items-center justify-center"
