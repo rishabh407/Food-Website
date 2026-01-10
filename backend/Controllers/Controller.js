@@ -169,27 +169,57 @@ export const additemtocart = async (req, res) => {
   }
 };
 
+// export const getUserCart = async (req, res) => {
+//   try {
+//     const userId = req.user.id;
+//     const cart = await Cart.findOne({ user: userId });
+//     if (!cart) {
+//       return res.json({ items: [], totalsum: 0 });
+//     }
+
+//     const totalsum = cart.items.reduce(
+//       (acc, item) => acc + item.price * item.quantity,
+//       0
+//     );
+
+//     res.json({
+//       items: cart.items,
+//       totalsum,
+//     });
+//   } catch (error) {
+//     res.status(500).json({ message: "Failed to fetch cart" });
+//   }
+// };
+
 export const getUserCart = async (req, res) => {
   try {
     const userId = req.user.id;
-    const cart = await Cart.findOne({ user: userId });
+
+    const cart = await Cart.findOne({ user: userId })
+      .populate("items.product");
+
     if (!cart) {
       return res.json({ items: [], totalsum: 0 });
     }
 
-    const totalsum = cart.items.reduce(
+    // 🔥 REMOVE invalid items automatically
+    const validItems = cart.items.filter(item => item.product);
+
+    const totalsum = validItems.reduce(
       (acc, item) => acc + item.price * item.quantity,
       0
     );
 
     res.json({
-      items: cart.items,
+      items: validItems,
       totalsum,
     });
   } catch (error) {
+    console.error("getUserCart error:", error); // 🔥 SEE REAL ERROR
     res.status(500).json({ message: "Failed to fetch cart" });
   }
 };
+
 
 // export const logout=async(req,res)=>{
 //    const refreshToken = req.cookies.refreshtoken;
