@@ -4,6 +4,7 @@ import User from "../Model/User.js";
 import Product from "../Model/Product.js";
 // import Cart from "../Model/Cart.js";
 import Session from "../Model/Session.js";
+import Cart from "../Model/Cart.js";
 const isProduction = process.env.NODE_ENV === "production";
 export const registeruser=async(req,res)=>{
     try{
@@ -119,75 +120,76 @@ export const categorywisedata = async (req, res) => {
   }
 };
 
-// export const additemtocart = async (req, res) => {
-//   try {
-//     const userId = req.user._id;
-//     const { productId, size } = req.body;
+export const additemtocart = async (req, res) => {
+  try {
+    const userId = req.user.id; //particular user
+    // console.log(userId);
+    const { productId, size } = req.body;
+    // console.log(req.body);
+    
+    const product = await Product.findById(productId);
+    if (!product) {
+      return res.status(404).json({ message: "Product not found" });
+    }
+    
+    // console.log(product);
+    const priceObj = product.pricing.find((p) => p.size === size);
+    if (!priceObj) {
+      return res.status(400).json({ message: "Invalid size" });
+    }
+    // console.log(priceObj);
+    let cart = await Cart.findOne({ user: userId });
+    if (!cart) {
+      cart = await Cart.create({ user: userId, items: [] });
+    }
+    
+    // console.log(cart);
+    const existingItem = cart.items.find(
+      (item) =>
+        item.product.toString() === productId &&
+        item.size === size
+    );
 
-//     const product = await Product.findById(productId);
-//     if (!product) {
-//       return res.status(404).json({ message: "Product not found" });
-//     }
+    if (existingItem) {
+      existingItem.quantity += 1;
+    } else {
+      cart.items.push({
+        product: productId,
+        size,
+        price: priceObj.price,
+        quantity: 1
+      });
+    }
 
-//     const priceObj = product.pricing.find((p) => p.size === size);
-//     if (!priceObj) {
-//       return res.status(400).json({ message: "Invalid size" });
-//     }
+    await cart.save();
 
-//     let cart = await Cart.findOne({ user: userId });
-//     if (!cart) {
-//       cart = await Cart.create({ user: userId, items: [] });
-//     }
+    res.json({ message: "Item added to cart", cart });
+  } catch (error) {
+    res.status(500).json({ message: "Add to cart failed" });
+  }
+};
 
-//     const existingItem = cart.items.find(
-//       (item) =>
-//         item.product.toString() === productId &&
-//         item.size === size
-//     );
+export const getUserCart = async (req, res) => {
+  try {
+    const userId = req.user.id;
+    const cart = await Cart.findOne({ user: userId });
+    if (!cart) {
+      return res.json({ items: [], totalsum: 0 });
+    }
 
-//     if (existingItem) {
-//       existingItem.quantity += 1;
-//     } else {
-//       cart.items.push({
-//         product: productId,
-//         size,
-//         price: priceObj.price,
-//         quantity: 1,
-//       });
-//     }
+    const totalsum = cart.items.reduce(
+      (acc, item) => acc + item.price * item.quantity,
+      0
+    );
 
-//     await cart.save();
-
-//     res.json({ message: "Item added to cart", cart });
-//   } catch (error) {
-//     res.status(500).json({ message: "Add to cart failed" });
-//   }
-// };
-
-// export const getUserCart = async (req, res) => {
-//   try {
-//     const userId = req.user._id;
-
-//     const cart = await Cart.findOne({ user: userId })
-//       .populate("items.product"); // optional but recommended
-
-//     if (!cart) {
-//       return res.json({ items: [], totalsum: 0 });
-//     }
-
-//     const totalsum = cart.items.reduce(
-//       (acc, item) => acc + item.price * item.quantity,
-//       0
-//     );
-
-//     res.json({
-//       items: cart.items,
-//       totalsum,
-//     });
-//   } catch (error) {
-//     res.status(500).json({ message: "Failed to fetch cart" });
-//   }
-// };
+    res.json({
+      items: cart.items,
+      totalsum,
+    });
+  } catch (error) {
+    res.status(500).json({ message: "Failed to fetch cart" });
+  }
+};
 
 // export const logout=async(req,res)=>{
 //    const refreshToken = req.cookies.refreshtoken;
@@ -249,7 +251,3 @@ export const getMe=async(req,res)=>{
     user
    });
 };
-
-export const additemtocart=async(req,res)=>{
-   console.log(req.body);
-}

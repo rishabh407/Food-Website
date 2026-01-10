@@ -23,8 +23,8 @@ const App = () => {
   const { userdata,setuserdata } = useAuth(); // 👈 auth state
   const [showAuthModal, setShowAuthModal] = useState(true);
   const [authType, setAuthType] = useState("login"); // login | register
-  
-  // 🔥 CLOSE MODAL AUTOMATICALLY AFTER LOGIN
+  const dispatch=useDispatch();
+// 🔥 CLOSE MODAL AUTOMATICALLY AFTER LOGIN
 // const dispatch = useDispatch();
 useEffect(()=>{
     const restoreAuth=async()=>{
@@ -32,7 +32,7 @@ useEffect(()=>{
           const res=await api.get("/me",
         { withCredentials: true }
       );
-      console.log(res.data.user);
+      // console.log(res.data.user);
       setuserdata(res.data.user);
       setShowAuthModal(false);
     //  dispatch(fetchCartAsync());
@@ -43,6 +43,13 @@ useEffect(()=>{
     }
     restoreAuth();
   },[setuserdata]);
+  // Fetch cart on refresh
+  useEffect(() => {
+  if (userdata) {
+    dispatch(fetchCartAsync());
+  }
+}, [userdata]);
+
   return (
     <>
     <BrowserRouter>
