@@ -1,8 +1,7 @@
 import { useDispatch } from "react-redux";
 import api from "../api/axiosInstance";
 import { addToWishlist, clearWishlist, removeFromWishlist, setWishlistFromBackend } from "./wishlistSlice";
-// import axios from "axios";
-/* ADD TO CART (Backend + Redux) */
+
 export const wishlistAsync = (item) => async (dispatch) => {
   try {
     await api.post(

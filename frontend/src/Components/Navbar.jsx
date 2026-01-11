@@ -22,8 +22,6 @@ const Navbar = ({ onLoginClick, onRegisterClick }) => {
     { name: "Menu", path: "/menu", icon: UtensilsCrossed },
     { name: "About", path: "/about", icon: Info },
     { name: "Gallery", path: "/gallery", icon: Images },
-    // { name: "Login", path: "/login", icon: DoorOpen },
-    // { name: "Register", path: "/register", icon: UserPlus},
   ];
   const isActive = (path) => location.pathname === path;
 

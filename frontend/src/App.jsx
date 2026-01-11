@@ -25,18 +25,15 @@ const App = () => {
   const [showAuthModal, setShowAuthModal] = useState(true);
   const [authType, setAuthType] = useState("login"); // login | register
   const dispatch=useDispatch();
-// 🔥 CLOSE MODAL AUTOMATICALLY AFTER LOGIN
-// const dispatch = useDispatch();
+
 useEffect(()=>{
     const restoreAuth=async()=>{
       try{
           const res=await api.get("/me",
         { withCredentials: true }
       );
-      // console.log(res.data.user);
       setuserdata(res.data.user);
       setShowAuthModal(false);
-    //  dispatch(fetchCartAsync());
       }
       catch(error){
            console.log(error.message);      
@@ -46,7 +43,6 @@ useEffect(()=>{
   },[setuserdata]);
 
   // Fetch cart on refresh
-
   useEffect(() => {
   if (userdata) {
     dispatch(fetchCartAsync());

@@ -25,23 +25,14 @@ app.use(express.urlencoded({extended:true}));
 app.use(cookieParser());
 app.use("/images", express.static("Images"));
 
-// Database Connectivity
-
-// ConnectDb();
-
-// ✅ Routes
 
 app.use("/",UrlRoutes)
-// app.post("/wishlist/add",(req,res)=>{
-//   console.log(req.body);
-// })
-// ✅ Start Server
+
 const startServer=async()=>{
   try{
     // Connect Database
     await ConnectDb();
     // Auto-seed products (Only If empty)
-    
     await seedProducts();
     // Start listening 
     app.listen(PORT, () => {

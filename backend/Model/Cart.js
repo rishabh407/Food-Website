@@ -39,19 +39,3 @@ const cartSchema = new mongoose.Schema(
 );
 
 export default mongoose.model("Cart", cartSchema);
-
-// import mongoose, { Mongoose } from "mongoose";
-// const cartItemsSchema=new mongoose.Schema({
-
-// })
-// const cart=new mongoose.Schema({
-//     user:{
-//       type:mongoose.Schema.Types.ObjectId,
-//       ref:"User",
-//       unique:true,
-// },
-// items:[cartItemsSchema],
-// },
-// {timestamps:true}
-// );
-// export const Cart=mongoose.model("Cart",cart);

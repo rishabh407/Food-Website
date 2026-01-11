@@ -138,7 +138,7 @@ const Cart = () => {
                               </span>
 
                               <motion.button
-                                // onClick={()=>handleCart(item)}
+                               
                                 onClick={()=>dispatch(addToCartAsync(item))}
                                 whileHover={{ scale: 1.1 }}
                                 whileTap={{ scale: 0.9 }}

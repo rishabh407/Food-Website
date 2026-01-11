@@ -1,11 +1,8 @@
 import { useDispatch } from "react-redux";
 import api from "../api/axiosInstance";
 import { addToCart, removeFromCart, clearCart, setCartFromBackend } from "./cartSlice";
-// import axios from "axios";
-/* ADD TO CART (Backend + Redux) */
 export const addToCartAsync = (item) => async (dispatch) => {
   try {
-    // const dispatch=useDispatch();
     await api.post(
       "/cart/add",
       {
@@ -19,12 +16,10 @@ export const addToCartAsync = (item) => async (dispatch) => {
   }
 };
 
-// Export fetch items from the cart.
 
 export const fetchCartAsync = () => async (dispatch) => {
   try {
     const res = await api.get("/cart");
-    // console.log(res);
     dispatch(setCartFromBackend(res.data));
   } catch (error) {
     console.error("Failed to fetch cart", error);

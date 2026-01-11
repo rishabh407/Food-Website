@@ -2,10 +2,10 @@ import bcrypt from "bcrypt";
 import { generateRefreshToken, generatetoken } from "../GenerateToken/token.js";
 import User from "../Model/User.js";
 import Product from "../Model/Product.js";
-// import Cart from "../Model/Cart.js";
 import Session from "../Model/Session.js";
 import Cart from "../Model/Cart.js";
 import Wishlist from "../Model/Wishlist.js";
+import Orders from "../Model/Orders";
 const isProduction = process.env.NODE_ENV === "production";
 export const registeruser=async(req,res)=>{
     try{
@@ -19,7 +19,6 @@ export const registeruser=async(req,res)=>{
           }
     
        // Hash  Password
-    
        const hashedPassword=await bcrypt.hash(password,10);
        //  Storing Data Into The Database 
         const user=await User.create({
@@ -170,27 +169,6 @@ export const additemtocart = async (req, res) => {
   }
 };
 
-// export const getUserCart = async (req, res) => {
-//   try {
-//     const userId = req.user.id;
-//     const cart = await Cart.findOne({ user: userId });
-//     if (!cart) {
-//       return res.json({ items: [], totalsum: 0 });
-//     }
-
-//     const totalsum = cart.items.reduce(
-//       (acc, item) => acc + item.price * item.quantity,
-//       0
-//     );
-
-//     res.json({
-//       items: cart.items,
-//       totalsum,
-//     });
-//   } catch (error) {
-//     res.status(500).json({ message: "Failed to fetch cart" });
-//   }
-// };
 
 export const getUserCart = async (req, res) => {
   try {
@@ -221,26 +199,6 @@ export const getUserCart = async (req, res) => {
   }
 };
 
-
-// export const logout=async(req,res)=>{
-//    const refreshToken = req.cookies.refreshtoken;
-//    console.log(refreshToken);
-//   await Session.deleteOne({ refreshToken });
-
-//   res.clearCookie("accessToken", {
-//     httpOnly: true,
-//     secure: true,
-//     sameSite: "none"
-//   });
-
-//   res.clearCookie("refreshtoken", {
-//     httpOnly: true,
-//     secure: true,
-//     sameSite: "none"
-//   });
-
-//   res.json({ success: true });
-// }
 
 export const logout = async (req, res) => {
   try {
@@ -282,40 +240,6 @@ export const getMe=async(req,res)=>{
     user
    });
 };
-
-// export const removeFromCart=async(req,res)=>{
-//    try{ 
-//   const userId=req.user.id; // persons user id .
-//      const { productId, size } = req.body;
-//     const product = await Product.findById(productId);
-//     if (!product) {
-//       return res.status(404).json({ message: "Product not found" });
-//     }
-//    const priceObj = product.pricing.find((p) => p.size === size);
-//     if (!priceObj) {
-//       return res.status(400).json({ message: "Invalid size" });
-//     }  
-//     let cart = await Cart.findOne({ user: userId });// after finding product from the cart.
-//     // Check their existance in the cart . 
-//        const existingItem = cart.items.find(
-//       (item) =>
-//         item.product.toString() === productId &&
-//         item.size === size
-//     );
-//     if(existingItem.quantity>1)
-//       {
-//         existingItem.quantity-=1;
-//       }
-//       else{
-//         await cart.items.deleteOne({productId});
-//       }
-//      await cart.save();
-    
-//         res.json({ message: "Item Removed from cart ", cart });
-//   } catch (error) {
-//     res.status(500).json({ message: "Remove from cart failed" });
-//   }
-// }
 export const removeFromCart=async(req,res)=>{
    try{ 
   const userId=req.user.id; // persons user id .
@@ -381,13 +305,6 @@ export const clearcart = async (req, res) => {
     res.status(500).json({ message: "Failed to clear cart" });
   }
 };
-
-
-// export const clearcart=async(req,res)=>{
-//    const userId=req.user.id; 
-//    await Cart.deleteOne({user:userId});
-
-// } 
 
 export const addtowishlist=async(req,res)=>{
       try {
@@ -459,46 +376,6 @@ export const gettowishlist=async(req,res)=>{
   }
 }
 
-// export const  removetowishlist=async(req,res)=>{
-//      try{ 
-//   const userId=req.user.id; // persons user id .
-//      const { productId, size } = req.body;
-//     const product = await Product.findById(productId);
-//     if (!product) {
-//       return res.status(404).json({ message: "Product not found" });
-//     }
-//    const priceObj = product.pricing.find((p) => p.size === size);
-//     if (!priceObj) {
-//       return res.status(400).json({ message: "Invalid size" });
-//     }  
-//     let wishlist = await Wishlist.findOne({ user: userId });// after finding product from the cart.
-//     // Check their existance in the cart . 
-//        const existingItemIndex = wishlist.items.findIndex(
-//       (item) =>
-//         item.product.toString() === productId &&
-//         item.size === size
-//     );
-// if (existingItemIndex === -1) {
-//   return res.status(404).json({ message: "Item not found in wishlist" });
-// }
-// // Wishlist has NO quantity → just remove item
-// wishlist.items.splice(existingItemIndex, 1);
-//           // 🔥 DELETE CART IF EMPTY
-//     if (wishlist.items.length === 0) {
-//       await Wishlist.deleteOne({ user: userId });
-//       return res.json({
-//         items: [],
-//         message: "Cart cleared",
-//       });
-//     }
-    
-//      await wishlist.save();
-    
-//         res.json({ message: "Item Removed from cart ", wishlist });
-//   } catch (error) {
-//     res.status(500).json({ message: "Remove from cart failed" });
-//   }
-// }
 
 export const removetowishlist = async (req, res) => {
     //  console.log(req.body);
@@ -515,16 +392,6 @@ export const removetowishlist = async (req, res) => {
       return res.status(404).json({ message: "Wishlist not found" });
     }
     console.log(wishlist);
-    
-    // const itemIndex = wishlist.items.findIndex(
-      //   (item) =>
-        //     item.productId.toString() === productId &&
-    //     item.size === size
-    // );
-
-//     const itemIndex = wishlist.items.findIndex(
-//   (item) => item.id.toString() === productId && item.size === size
-// );
 
 const itemIndex = wishlist.items.findIndex(
   (item) =>
@@ -577,5 +444,51 @@ export const cleartowishlist=async(req,res)=>{
   } catch (error) {
     console.error("Clear cart error:", error);
     res.status(500).json({ message: "Failed to clear cart" });
+  }
+}
+
+export const orderdetails=async(req,res)=>{
+   try{     
+  //  console.log(req.body);
+         const userId = req.user.id;
+        //  res.json({message:"Order placed successfully"})
+        // OrderSchema
+       const { address, Items, totalsum } = req.body;
+           if (!Items || Items.length === 0) {
+      return res.status(400).json({ message: "No items to place order" });
+    }
+         // 🔹 Transform frontend items → schema items
+    const orderItems = Items.map(item => ({
+      product: item._id,     // map _id → product
+      size: item.size,
+      price: item.price,     // snapshot price
+      quantity: item.quantity,
+    }));
+
+    // Create Order 
+    const order = await Orders.create({
+      user:userId,
+      shippingAddress:{
+                name: address.name,
+        phone: address.phone,
+        address: address.street, // mapping street → address
+        city: address.city,
+        pincode: address.pincode,
+      },
+      items:orderItems,
+      totalAmount:totalsum,
+      // paymentMethod: "COD" (default)
+      // paymentStatus: "PENDING" (default)
+      // orderStatus: "PLACED" (default)
+    });
+    console.log(order);
+        return res.status(201).json({
+      success: true,
+      message: "Order placed successfully",
+      order,
+    });
+  }catch (error) {
+    console.error("Place Order Error:", error);
+    res.status(500).json({ message: "Internal server error" });
   }
 }

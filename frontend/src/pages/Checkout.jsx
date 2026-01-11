@@ -5,7 +5,8 @@ import { clearCart } from "../redux/cartSlice";
 import { motion, AnimatePresence } from "framer-motion";
 import { FaCheckCircle, FaUser, FaPhone, FaMapMarkerAlt, FaCity, FaHashtag, FaShoppingBag } from "react-icons/fa";
 import toast from "react-hot-toast";
-import { API_BASE_URL } from "../api/axiosInstance";
+import api, { API_BASE_URL } from "../api/axiosInstance";
+import { clearCartAsync } from "../redux/cartActions";
 
 const Checkout = () => {
   const { Items, totalsum } = useSelector((state) => state.cart);
@@ -38,14 +39,16 @@ const Checkout = () => {
     return Object.keys(newErrors).length === 0;
   };
 
-  const handlePlaceOrder = () => {
+  const handlePlaceOrder = async() => {
     if (!validateForm()) {
       toast.error("Please fill all fields correctly");
       return;
     }
-
+    await api.post("/order/details",{
+      address,Items,totalsum
+    })
     setOrderPlaced(true);
-    dispatch(clearCart());
+    dispatch(clearCartAsync());
     toast.success("Order placed successfully! 🎉");
   };
 

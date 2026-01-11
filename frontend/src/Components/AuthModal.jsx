@@ -30,15 +30,9 @@ const AuthModal = ({ isOpen, type, setAuthType, onClose }) => {
   try {
     const response = await api.post("/login",loform);
     toast.success("User Login Successfully 🎉");
-    // // 1️⃣ Save token
-    // localStorage.setItem("foodtoken", response.data.token);
 
     // 2️⃣ Save user in context
     login(response.data.user);
-
-    // 3️⃣ 🔥 FETCH CART FROM BACKEND
-    // dispatch(fetchCartAsync());
-
     // 4️⃣ Close modal
     onClose();
   } catch (error) {
