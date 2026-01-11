@@ -1,7 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
-  Items: JSON.parse(localStorage.getItem("wishlistitems")) || [],
+ Items:[],
 };
 
 const wishlistSlice = createSlice({
@@ -21,6 +21,18 @@ const wishlistSlice = createSlice({
       }
     },
 
+    setWishlistFromBackend: (state, action) => {
+      console.log(state.Items);
+      state.Items = action.payload.items.map((item) => ({
+        _id: item.product._id,
+        name: item.product.name,
+        image_url: item.product.image_url,
+        size: item.size,
+        price: item.price,
+      }));
+
+    },
+
     removeFromWishlist: (state, action) => {
       const item = action.payload;
       
@@ -35,6 +47,6 @@ const wishlistSlice = createSlice({
   },
 });
 
-export const { addToWishlist, removeFromWishlist, clearWishlist } = wishlistSlice.actions;
+export const { addToWishlist, removeFromWishlist,setWishlistFromBackend, clearWishlist } = wishlistSlice.actions;
 export default wishlistSlice.reducer;
 

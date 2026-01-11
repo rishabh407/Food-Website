@@ -1,5 +1,21 @@
 import mongoose from "mongoose";
 
+const wishlistItemsSchema = new mongoose.Schema({
+  product: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Product",
+    required: true,
+  },
+  size: {
+    type: String,
+    required: true,
+  },
+  price: {
+    type: Number,
+    required: true, // snapshot price
+  },
+});
+
 const wishlistSchema = new mongoose.Schema(
   {
     user: {
@@ -7,17 +23,12 @@ const wishlistSchema = new mongoose.Schema(
       ref: "User",
       required: true,
       unique: true,
+      index: true,
     },
-    items: [
-      {
-        product: {
-          type: mongoose.Schema.Types.ObjectId,
-          ref: "Product",
-        },
-        size: String,
-        price: Number,
-      },
-    ],
+    items: {
+      type: [wishlistItemsSchema],
+      default: [],
+    },
   },
   { timestamps: true }
 );

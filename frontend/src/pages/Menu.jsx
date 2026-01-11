@@ -10,6 +10,7 @@ import { addToWishlist, removeFromWishlist } from "../redux/wishlistSlice";
 import { API_BASE_URL } from "../api/axiosInstance";
 import { useAuth } from "../Context/AuthContext";
 import { addToCartAsync } from "../redux/cartActions";
+import { removeFromWishlistAsync, wishlistAsync } from "../redux/wishlistactions";
 const CATEGORIES = [
   { label: "All", value: null },
   { label: "Fast Food", value: "FastFoodFavorites" },
@@ -69,7 +70,7 @@ const handleCart = (item) => {
     const selectedPricing = item.pricing[selectedIndex];
 
     const wishlistItem = {
-      id: item.id,
+      id: item._id,
       name: item.name,
       image_url: item.image_url,
       size: selectedPricing.size,
@@ -81,21 +82,23 @@ const handleCart = (item) => {
     );
 
     if (isInWishlist) {
-      dispatch(removeFromWishlist(wishlistItem));
+      dispatch(removeFromWishlistAsync
+        (wishlistItem));
       toast.success(`${item.name} removed from wishlist`);
     } else {
-      dispatch(addToWishlist(wishlistItem));
+      dispatch(wishlistAsync(wishlistItem));
       toast.success(`${item.name} added to wishlist ❤️`);
     }
   };
 
   const isItemInWishlist = (item) => {
-    const selectedIndex = selectedSize[item._id] ?? 0;
-    const selectedPricing = item.pricing[selectedIndex];
-    return wishlistItems.some(
-      (w) => w.id === item.id && w.size === selectedPricing.size
-    );
-  };
+  const selectedIndex = selectedSize[item._id] ?? 0;
+  const selectedPricing = item.pricing[selectedIndex];
+
+  return wishlistItems.some(
+    (w) => w.id === item._id && w.size === selectedPricing.size
+  );
+};
   if (isLoading) {
     return (
       <div className="min-h-screen flex items-center justify-center mt-20">
@@ -201,31 +204,32 @@ const handleCart = (item) => {
                   className="h-full w-full object-contain p-3 sm:p-4 group-hover:scale-110 transition-transform duration-300"
                 />
                 <motion.button
-                  onClick={() => {
-                    if (!userdata) {
-                        onLoginClick();
-                        return;
-                      }
-                      handleWishlist(item)}}
-                  className={`absolute top-2 right-2 sm:top-4 sm:right-4 w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-white/90 backdrop-blur-sm shadow-lg flex items-center justify-center transition-opacity hover:bg-red-500 hover:text-white ${
-                    isItemInWishlist(item)
-                      ? "opacity-100 bg-red-500 text-white"
-                      : "opacity-0 group-hover:opacity-100"
-                  }`}
-                  whileHover={{ scale: 1.1 }}
-                  whileTap={{ scale: 0.9 }}
-                >
-                  <FaHeart
-                    className={
-                      isItemInWishlist(item)
-                        ? "text-white"
-                        : "text-red-500 group-hover:text-white"
-                    }
-                    size={14}
-                  />
-                </motion.button>
-              </div>
+  onClick={() => {
+    if (!userdata) {
+      onLoginClick();
+      return;
+    }
+    handleWishlist(item);
+  }}
+  whileHover={{ scale: 1.1 }}
+  whileTap={{ scale: 0.9 }}
+  className={`absolute top-2 right-2 sm:top-4 sm:right-4
+    w-8 h-8 sm:w-10 sm:h-10
+    rounded-full
+    shadow-lg
+    flex items-center justify-center
+    transition-all duration-300
+    ${
+      isItemInWishlist(item)
+        ? "bg-red-500 text-white opacity-100"
+        : "bg-white/90 text-red-500 opacity-0 group-hover:opacity-100 hover:bg-red-500 hover:text-white"
+    }
+  `}
+>
+  <FaHeart size={14} />
+</motion.button>
 
+              </div>
               <div className="p-4 sm:p-5 md:p-6 flex flex-col flex-grow">
                 <h3 className="text-lg sm:text-xl font-bold mb-2 text-gray-800 group-hover:text-red-600 transition-colors line-clamp-2">
                   {item.name}

@@ -31,7 +31,7 @@ const cartSlice = createSlice({
     },
 
     setCartFromBackend: (state, action) => {
-      console.log(state.Items);
+      // console.log(state.Items);
       state.Items = action.payload.items.map((item) => ({
         _id: item.product._id,
         name: item.product.name,

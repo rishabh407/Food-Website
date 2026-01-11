@@ -12,11 +12,6 @@ export const addToCartAsync = (item) => async (dispatch) => {
         productId: item._id,   // ✅ MongoDB _id
         size: item.size,
       }
-      // {
-      //   headers: {
-      //     Authorization:`Bearer ${token}`,
-      //   },
-      // }
     );
     dispatch(addToCart(item)); // optimistic UI update
   } catch (error) {
@@ -50,9 +45,6 @@ export const removeFromCartAsync = (item) => async (dispatch) => {
   }
 };
 
-/**
- * CLEAR CART
- */
 export const clearCartAsync = () => async (dispatch) => {
   try {
     await api.delete("/cart/clear");
@@ -61,5 +53,6 @@ export const clearCartAsync = () => async (dispatch) => {
     console.error("Clear cart failed", error);
   }
 };
+
 
 

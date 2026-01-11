@@ -32,7 +32,9 @@ app.use("/images", express.static("Images"));
 // ✅ Routes
 
 app.use("/",UrlRoutes)
-
+// app.post("/wishlist/add",(req,res)=>{
+//   console.log(req.body);
+// })
 // ✅ Start Server
 const startServer=async()=>{
   try{
@@ -51,6 +53,3 @@ const startServer=async()=>{
   }
 };
 startServer();
-
-
-

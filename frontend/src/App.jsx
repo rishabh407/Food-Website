@@ -19,6 +19,7 @@ import { useAuth } from './Context/AuthContext';
 import { useDispatch } from 'react-redux';
 import { fetchCartAsync } from './redux/cartActions';
 import api from './api/axiosInstance';
+import { fetchWishlistAsync } from './redux/wishlistactions';
 const App = () => {
   const { userdata,setuserdata } = useAuth(); // 👈 auth state
   const [showAuthModal, setShowAuthModal] = useState(true);
@@ -43,14 +44,17 @@ useEffect(()=>{
     }
     restoreAuth();
   },[setuserdata]);
+
   // Fetch cart on refresh
+
   useEffect(() => {
   if (userdata) {
     dispatch(fetchCartAsync());
+    dispatch(fetchWishlistAsync());
   }
 }, [userdata]);
 
-  return (
+return (
     <>
     <BrowserRouter>
     <ScrollToTop/>    

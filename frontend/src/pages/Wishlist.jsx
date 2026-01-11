@@ -1,13 +1,14 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { removeFromWishlist, clearWishlist } from "../redux/wishlistSlice";
-import { addToCart } from "../redux/cartSlice";
 import { Link, useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { FaTrash, FaShoppingCart, FaHeart, FaHeartBroken } from "react-icons/fa";
 import toast from "react-hot-toast";
 import { API_BASE_URL } from "../api/axiosInstance";
 import { useAuth } from "../Context/AuthContext";
+import { addToCartAsync, clearCartAsync } from "../redux/cartActions";
+import { clearWishlistAsync, removeFromWishlistAsync } from "../redux/wishlistactions";
 
 const Wishlist = () => {
     const {userdata}=useAuth();
@@ -16,17 +17,17 @@ const Wishlist = () => {
   const navigate = useNavigate();
 
   const handleRemoveFromWishlist = (item) => {
-    dispatch(removeFromWishlist(item));
+    dispatch(removeFromWishlistAsync(item));
     toast.success(`${item.name} removed from wishlist`);
   };
 
   const handleAddToCart = (item) => {
-    dispatch(addToCart({ ...item, quantity: 1 }));
+    dispatch(addToCartAsync({ ...item, quantity: 1 }));
     toast.success(`${item.name} added to cart!`);
   };
 
   const handleClearWishlist = () => {
-    dispatch(clearWishlist());
+    dispatch(clearWishlistAsync());
     toast.success("Wishlist cleared");
   };
   

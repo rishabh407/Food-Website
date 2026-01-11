@@ -5,6 +5,7 @@ import Product from "../Model/Product.js";
 // import Cart from "../Model/Cart.js";
 import Session from "../Model/Session.js";
 import Cart from "../Model/Cart.js";
+import Wishlist from "../Model/Wishlist.js";
 const isProduction = process.env.NODE_ENV === "production";
 export const registeruser=async(req,res)=>{
     try{
@@ -387,3 +388,194 @@ export const clearcart = async (req, res) => {
 //    await Cart.deleteOne({user:userId});
 
 // } 
+
+export const addtowishlist=async(req,res)=>{
+      try {
+    const userId = req.user.id; //particular user
+    console.log(userId);
+    const { productId, size } = req.body;
+    console.log(req.body);
+    
+    const product = await Product.findById(productId);
+    if (!product) {
+      return res.status(404).json({ message: "Product not found" });
+    }
+    
+    console.log(product);
+    const priceObj = product.pricing.find((p) => p.size === size);
+    if (!priceObj) {
+      return res.status(400).json({ message: "Invalid size" });
+    }
+    console.log(priceObj);
+    let wishlist = await Wishlist.findOne({ user: userId });
+    if (!wishlist) {
+      wishlist = await Wishlist.create({ user: userId, items: [] });
+    }
+    
+    console.log(wishlist);
+    const existingItem = wishlist.items.find(
+      (item) =>
+        item.product.toString() === productId &&
+        item.size === size
+    );
+
+    if (existingItem) {
+      return res.status(200).json({message:"Item Already Added To Wishlist"});
+    } else {
+      wishlist.items.push({
+        product: productId,
+        size,
+        price: priceObj.price,
+      });
+    }
+    await wishlist.save();
+
+    res.json({ message: "Item added to wishlist", wishlist });
+  } catch (error) {
+    console.error(error.message);
+    res.status(500).json({ message: "Add to Wishlist failed"});
+  }    
+}
+
+export const gettowishlist=async(req,res)=>{
+      try {
+    const userId = req.user.id;
+
+    const wishlist = await Wishlist.findOne({ user: userId })
+      .populate("items.product");
+
+    if (!wishlist) {
+      return res.json({ items: []});
+    }
+
+    // 🔥 REMOVE invalid items automatically
+    const validItems = wishlist.items.filter(item => item.product);
+    res.json({
+      items: validItems,
+    });
+  } catch (error) {
+    console.error("getUserwishlist error:", error); // 🔥 SEE REAL ERROR
+    res.status(500).json({ message: "Failed to fetch cart" });
+  }
+}
+
+// export const  removetowishlist=async(req,res)=>{
+//      try{ 
+//   const userId=req.user.id; // persons user id .
+//      const { productId, size } = req.body;
+//     const product = await Product.findById(productId);
+//     if (!product) {
+//       return res.status(404).json({ message: "Product not found" });
+//     }
+//    const priceObj = product.pricing.find((p) => p.size === size);
+//     if (!priceObj) {
+//       return res.status(400).json({ message: "Invalid size" });
+//     }  
+//     let wishlist = await Wishlist.findOne({ user: userId });// after finding product from the cart.
+//     // Check their existance in the cart . 
+//        const existingItemIndex = wishlist.items.findIndex(
+//       (item) =>
+//         item.product.toString() === productId &&
+//         item.size === size
+//     );
+// if (existingItemIndex === -1) {
+//   return res.status(404).json({ message: "Item not found in wishlist" });
+// }
+// // Wishlist has NO quantity → just remove item
+// wishlist.items.splice(existingItemIndex, 1);
+//           // 🔥 DELETE CART IF EMPTY
+//     if (wishlist.items.length === 0) {
+//       await Wishlist.deleteOne({ user: userId });
+//       return res.json({
+//         items: [],
+//         message: "Cart cleared",
+//       });
+//     }
+    
+//      await wishlist.save();
+    
+//         res.json({ message: "Item Removed from cart ", wishlist });
+//   } catch (error) {
+//     res.status(500).json({ message: "Remove from cart failed" });
+//   }
+// }
+
+export const removetowishlist = async (req, res) => {
+    //  console.log(req.body);
+    try {
+    const userId = req.user.id; // ✅ FIXED
+    console.log(userId);
+    const { productId, size } = req.body;
+    console.log(req.body);
+    
+    let wishlist = await Wishlist.findOne({ user: userId });
+    
+    // ✅ CHECK wishlist existence
+    if (!wishlist) {
+      return res.status(404).json({ message: "Wishlist not found" });
+    }
+    console.log(wishlist);
+    
+    // const itemIndex = wishlist.items.findIndex(
+      //   (item) =>
+        //     item.productId.toString() === productId &&
+    //     item.size === size
+    // );
+
+//     const itemIndex = wishlist.items.findIndex(
+//   (item) => item.id.toString() === productId && item.size === size
+// );
+
+const itemIndex = wishlist.items.findIndex(
+  (item) =>
+    item.product.toString() === productId &&
+    item.size === size
+);
+
+console.log(itemIndex);
+
+if (itemIndex === -1) {
+  return res.status(404).json({ message: "Item not found in wishlist" });
+}
+
+// ✅ Remove item
+wishlist.items.splice(itemIndex, 1);
+
+console.log(wishlist);
+// ✅ Delete wishlist if empty
+if (wishlist.items.length === 0) {
+  await Wishlist.deleteOne({ user: userId });
+  return res.json({
+    items: [],
+    message: "Wishlist cleared",
+  });
+}
+
+console.log(wishlist);
+    await wishlist.save();
+
+    res.json({
+      message: "Item removed from wishlist",
+      wishlist,
+    });
+  } catch (error) {
+    console.error("Remove wishlist error:", error);
+    res.status(500).json({ message: "Remove from wishlist failed" });
+  }
+};
+
+export const cleartowishlist=async(req,res)=>{ 
+            try {
+    const userId = req.user.id;
+     console.log(userId);
+     await Wishlist.deleteOne({ user: userId });
+     console.log(Wishlist);
+    res.json({
+      items: [],
+      message: "Cart cleared successfully",
+    });
+  } catch (error) {
+    console.error("Clear cart error:", error);
+    res.status(500).json({ message: "Failed to clear cart" });
+  }
+}
