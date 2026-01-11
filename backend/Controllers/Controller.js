@@ -492,3 +492,20 @@ export const orderdetails=async(req,res)=>{
     res.status(500).json({ message: "Internal server error" });
   }
 }
+export const fetchTotalOrders = async (req, res) => {
+  try {
+    const userId = req.user.id; // from auth middleware
+
+    const totalOrders = await Orders.countDocuments({ user: userId });
+    console.log(totalOrders);
+    return res.status(200).json({
+      success: true,
+      totalOrders,
+    });
+  } catch (error) {
+    return res.status(500).json({
+      success: false,
+      message: "Failed to fetch total orders",
+    });
+  }
+};

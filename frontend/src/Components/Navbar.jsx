@@ -4,13 +4,29 @@ import { Menu, X, ShoppingCart, Home, UtensilsCrossed, Info, Images, Heart,DoorO
 import { motion } from "framer-motion";
 import { useSelector } from "react-redux";
 import { useAuth } from "../Context/AuthContext";
+import {
+  UserCircle,
+  LayoutDashboard,
+  Package,
+  User,
+  LogOut
+} from "lucide-react";
 
 const Navbar = ({ onLoginClick, onRegisterClick }) => {
   
   // Take Data From the User So That We Can Display it while login. Take It From Context. 
+
   const {userdata,logout}=useAuth();
   const [isOpen, setIsOpen] = useState(false);
   const location = useLocation();
+  const [profileOpen, setProfileOpen] = useState(false);
+
+const accountMenu = [
+  { label: "Dashboard", path: "/account", icon: LayoutDashboard },
+  { label: "My Orders", path: "/orders", icon: Package },
+  { label: "Profile", path: "/profile", icon: User },
+];
+
   // location provides which current page is opened and returns the path of it.
   console.log(location.pathname)
   const { Items } = useSelector((state) => state.cart);
@@ -116,20 +132,61 @@ const Navbar = ({ onLoginClick, onRegisterClick }) => {
               )}
             </Link>
             {/* AUTH BUTTONS */}
-            {userdata ? (
-  <div className="flex items-center gap-2 ml-2">
-    <span className="font-semibold text-gray-700">
-      Hi, {userdata.name}
-    </span>
-
+  
+{userdata ? (
+  <div className="relative ml-3">
+    {/* PROFILE ICON */}
     <button
-      onClick={logout}
-      className="px-4 py-2 rounded-lg bg-gray-100 hover:bg-gray-200 transition"
+      onClick={() => setProfileOpen(!profileOpen)}
+      className="p-2 rounded-full hover:bg-gray-100 transition"
     >
-      Logout
+      <UserCircle size={30} className="text-gray-700" />
     </button>
+
+    {/* DROPDOWN */}
+    {profileOpen && (
+      <motion.div
+        initial={{ opacity: 0, y: -8 }}
+        animate={{ opacity: 1, y: 0 }}
+        className="absolute right-0 mt-2 w-64 bg-white rounded-xl shadow-xl border z-50"
+      >
+        {/* USER INFO */}
+        <div className="px-4 py-3 border-b">
+          <p className="font-semibold text-gray-800">{userdata.name}</p>
+          <p className="text-sm text-gray-500">{userdata.email}</p>
+        </div>
+
+        {/* MENU */}
+        <div className="py-2">
+          {accountMenu.map(({ label, path, icon: Icon }) => (
+            <Link
+              key={label}
+              to={path}
+              className="flex items-center gap-3 px-4 py-2 hover:bg-gray-50"
+              onClick={() => setProfileOpen(false)}
+            >
+              <Icon size={18} />
+              {label}
+            </Link>
+          ))}
+        </div>
+
+        {/* LOGOUT */}
+        <button
+          onClick={() => {
+            logout();
+            setProfileOpen(false);
+          }}
+          className="w-full flex items-center gap-3 px-4 py-3 text-red-600 hover:bg-red-50 border-t"
+        >
+          <LogOut size={18} />
+          Logout
+        </button>
+      </motion.div>
+    )}
   </div>
 ) : (
+
   <div className="flex items-center gap-2 ml-2">
     <button
       onClick={onLoginClick}
@@ -214,40 +271,43 @@ const Navbar = ({ onLoginClick, onRegisterClick }) => {
               </Link>
             );
           })}
-          <Link
-            to="/wishlist"
-            className={`flex items-center gap-3 px-4 py-3 rounded-lg transition-all ${
-              isActive("/wishlist")
-                ? "text-red-600 bg-red-50 font-semibold"
-                : "text-gray-700 hover:bg-gray-50"
-            }`}
-            onClick={() => setIsOpen(false)}
-          >
-            <Heart size={20} className={isActive("/wishlist") ? "fill-red-600" : ""} />
-            <span>Wishlist</span>
-            {wishlistCount > 0 && (
-              <span className="ml-auto bg-pink-500 text-white text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center">
-                {wishlistCount > 9 ? "9+" : wishlistCount}
-              </span>
-            )}
-          </Link>
           {/* AUTH BUTTONS - MOBILE */}
-          <div className="pt-2 border-t border-gray-200 space-y-2">
+          {/* AUTH SECTION - MOBILE (CLEAN VERSION) */}
+<div className="pt-3 border-t border-gray-200">
   {userdata ? (
     <>
       {/* USER INFO */}
-      <div className="px-4 py-3 rounded-lg bg-gray-50 text-gray-700 font-semibold">
-        👋 Hi, {userdata.name}
+      <div className="px-4 py-3 mb-2 rounded-lg bg-gray-50">
+        <p className="font-semibold text-gray-800">
+          👋 Hi, {userdata.name}
+        </p>
+        <p className="text-sm text-gray-500">{userdata.email}</p>
+      </div>
+
+      {/* ACCOUNT MENU */}
+      <div className="space-y-1">
+        {accountMenu.map(({ label, path, icon: Icon }) => (
+          <Link
+            key={label}
+            to={path}
+            onClick={() => setIsOpen(false)}
+            className="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-gray-50 transition"
+          >
+            <Icon size={20} />
+            <span>{label}</span>
+          </Link>
+        ))}
       </div>
 
       {/* LOGOUT */}
       <button
         onClick={() => {
-        logout();
+          logout();
           setIsOpen(false);
         }}
-        className="w-full flex items-center gap-3 px-4 py-3 rounded-lg text-red-600 hover:bg-red-50"
+        className="mt-3 w-full flex items-center gap-3 px-4 py-3 rounded-lg text-red-600 hover:bg-red-50 transition"
       >
+        <LogOut size={20} />
         Logout
       </button>
     </>
@@ -279,8 +339,6 @@ const Navbar = ({ onLoginClick, onRegisterClick }) => {
     </>
   )}
 </div>
-
-
         </div>
       </motion.div>
     </motion.nav>
@@ -288,3 +346,4 @@ const Navbar = ({ onLoginClick, onRegisterClick }) => {
 };
 
 export default Navbar;
+

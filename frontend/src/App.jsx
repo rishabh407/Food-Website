@@ -20,12 +20,15 @@ import { useDispatch } from 'react-redux';
 import { fetchCartAsync } from './redux/cartActions';
 import api from './api/axiosInstance';
 import { fetchWishlistAsync } from './redux/wishlistactions';
+import Profile from './pages/Profile';
+import Account from './pages/Account';
+import Dashboard from './pages/Account';
 const App = () => {
   const { userdata,setuserdata } = useAuth(); // 👈 auth state
   const [showAuthModal, setShowAuthModal] = useState(true);
   const [authType, setAuthType] = useState("login"); // login | register
   const dispatch=useDispatch();
-
+  const [totalorders, settotalorders] = useState(0);
 useEffect(()=>{
     const restoreAuth=async()=>{
       try{
@@ -41,12 +44,16 @@ useEffect(()=>{
     }
     restoreAuth();
   },[setuserdata]);
-
   // Fetch cart on refresh
   useEffect(() => {
   if (userdata) {
     dispatch(fetchCartAsync());
     dispatch(fetchWishlistAsync());
+    const fetchtotalorder=async()=>{
+    const res=await api.get("totalorders");
+    settotalorders(res.data.totalorders);
+   }
+   fetchtotalorder();
   }
 }, [userdata]);
 
@@ -81,7 +88,9 @@ return (
           <Route path="/gallery" element={<Gallery/>}></Route>
           <Route path="/checkout" element={<Checkout/>}></Route>  
           <Route path="/cart" element={<Cart/>}></Route>
-          <Route path="/wishlist" element={<Wishlist/>}></Route>     
+          <Route path="/wishlist" element={<Wishlist/>}></Route>  
+          <Route path="/profile" element={<Profile/>}></Route>   
+          <Route path="/account" element={<Dashboard/>}></Route>   
         </Routes>        
                 {/* AUTH MODAL (OVER HOME) */}
       <AuthModal
