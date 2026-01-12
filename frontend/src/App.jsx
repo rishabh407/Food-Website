@@ -67,7 +67,6 @@ return (
         reverseOrder={false}
       />
         {/* Navbar on all pages */}
-
         {/* <Navbar/> */}
       {/* Navbar always visible */}
       <Navbar

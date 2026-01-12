@@ -113,8 +113,7 @@ const accountMenu = [
                 </motion.span>
               )}
             </Link>
-            
-            {/* Cart Button */}
+        {/* Cart Button */}
             <Link
               to="/cart"
               className="relative ml-2 px-4 py-2 rounded-lg bg-gradient-to-r from-red-500 to-orange-500 text-white hover:from-red-600 hover:to-orange-600 transition-all duration-300 flex items-center gap-2 shadow-md hover:shadow-lg"
