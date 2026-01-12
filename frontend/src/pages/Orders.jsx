@@ -116,12 +116,10 @@ const Orders = () => {
                       /> */}
 
                       <img
-  src={`${API_BASE_URL}${item.product.image_url}`}
+  src={`${API_BASE_URL}${item.image}`}
   alt={item.product?.name}
   className="w-16 h-16 object-cover rounded-lg border"
 />
-
-
                       <div className="flex-1">
                         <p className="font-semibold text-gray-800">
                           {item.product?.name}
