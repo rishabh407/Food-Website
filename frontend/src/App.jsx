@@ -23,6 +23,7 @@ import { fetchWishlistAsync } from './redux/wishlistactions';
 import Profile from './pages/Profile';
 import Account from './pages/Account';
 import Dashboard from './pages/Account';
+import Orders from './pages/Orders';
 const App = () => {
   const { userdata,setuserdata } = useAuth(); // 👈 auth state
   const [showAuthModal, setShowAuthModal] = useState(true);
@@ -90,7 +91,8 @@ return (
           <Route path="/cart" element={<Cart/>}></Route>
           <Route path="/wishlist" element={<Wishlist/>}></Route>  
           <Route path="/profile" element={<Profile/>}></Route>   
-          <Route path="/account" element={<Dashboard/>}></Route>   
+          <Route path="/account" element={<Dashboard/>}></Route>      
+          <Route path="/orders" element={<Orders/>}></Route>   
         </Routes>        
                 {/* AUTH MODAL (OVER HOME) */}
       <AuthModal

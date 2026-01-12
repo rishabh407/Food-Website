@@ -460,6 +460,7 @@ export const orderdetails=async(req,res)=>{
          // 🔹 Transform frontend items → schema items
     const orderItems = Items.map(item => ({
       product: item._id,     // map _id → product
+      image:item.image_url,
       size: item.size,
       price: item.price,     // snapshot price
       quantity: item.quantity,
@@ -478,7 +479,7 @@ export const orderdetails=async(req,res)=>{
       items:orderItems,
       totalAmount:totalsum,
       // paymentMethod: "COD" (default)
-      // paymentStatus: "PENDING" (default)
+      // paymentStatus: "PENDING" (defarult)
       // orderStatus: "PLACED" (default)
     });
     console.log(order);
@@ -506,6 +507,37 @@ export const fetchTotalOrders = async (req, res) => {
     return res.status(500).json({
       success: false,
       message: "Failed to fetch total orders",
+    });
+  }
+};
+
+// export const fetchorderdetails=async(req,res)=>{
+//   try{
+//        const userId=req.user.id;
+
+//   }catch(error){
+      
+//   }
+// }
+
+export const fetchorderdetails = async (req, res) => {
+  try {
+    const userId = req.user.id; // from auth middleware
+
+    const orders = await Orders.find({ user: userId })
+      .populate("items.product", "name image_url price")
+      .sort({ createdAt: -1 });
+
+    return res.status(200).json({
+      success: true,
+      orders,
+    });
+  } catch (error) {
+    console.error("Fetch order details error:", error);
+
+    return res.status(500).json({
+      success: false,
+      message: "Failed to fetch order details",
     });
   }
 };
