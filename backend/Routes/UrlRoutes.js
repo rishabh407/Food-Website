@@ -1,6 +1,6 @@
 import express from "express";
 import bcrypt from "bcrypt";
-import {  additemtocart, addtowishlist, categorywisedata, clearcart, cleartowishlist, fetchorderdetails, fetchTotalOrders, getallitemsdata, getMe, gettowishlist, getUserCart, loginuser, logout, orderdetails, registeruser, removeFromCart, removetowishlist } from "../Controllers/Controller.js";
+import {  additemtocart, addtowishlist, categorywisedata, clearcart, cleartowishlist, fetchorderdetails, fetchTotalOrders, getallitemsdata, getMe, gettowishlist, getUserCart, loginuser, logout, orderdetails, registeruser, removeFromCart, removetowishlist, updateProfile } from "../Controllers/Controller.js";
 import { authenticate } from "../Middlewares/authenticatemiddleware.js";
 
 const router=new express.Router();
@@ -22,4 +22,6 @@ router.delete("/wishlist/clear", authenticate, cleartowishlist);
 router.post("/order/details",authenticate,orderdetails);
 router.get("/order/fetchdetails",authenticate,fetchorderdetails);
 router.get("/totalorders",authenticate, fetchTotalOrders);
+router.put("/user/profile",authenticate, updateProfile);
+
 export default router;

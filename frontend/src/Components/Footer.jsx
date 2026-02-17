@@ -21,19 +21,21 @@ const Footer = () => {
       className="bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 text-white mt-20"
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-10 md:py-12">
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8 mb-6 sm:mb-8">
+        {/* Changed lg:grid-cols-4 to lg:grid-cols-3 for better spacing */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 sm:gap-12 mb-8">
+          
           {/* Brand Section */}
-          <div className="lg:col-span-1">
-            <div className="flex items-center gap-2 mb-3 sm:mb-4">
+          <div className="space-y-4">
+            <div className="flex items-center gap-2">
               <span className="text-2xl sm:text-3xl">🍔</span>
               <h2 className="text-xl sm:text-2xl font-bold bg-gradient-to-r from-red-500 to-orange-500 bg-clip-text text-transparent">
                 Foodies
               </h2>
             </div>
-            <p className="text-gray-400 mb-3 sm:mb-4 leading-relaxed text-sm sm:text-base">
+            <p className="text-gray-400 leading-relaxed text-sm sm:text-base max-w-sm">
               Delicious meals made with love. Order online or visit us today for the best dining experience.
             </p>
-            <div className="flex gap-4">
+            <div className="flex gap-4 pt-2">
               {socialLinks.map((social, index) => {
                 const Icon = social.icon;
                 return (
@@ -55,8 +57,8 @@ const Footer = () => {
           </div>
 
           {/* Quick Links */}
-          <div>
-            <h3 className="text-lg font-semibold mb-4 text-white">Quick Links</h3>
+          <div className="lg:justify-self-center">
+            <h3 className="text-lg font-semibold mb-4 text-white border-b border-gray-700 pb-2 inline-block">Quick Links</h3>
             <ul className="space-y-3">
               {[
                 { name: "Home", path: "/" },
@@ -79,55 +81,32 @@ const Footer = () => {
           </div>
 
           {/* Contact Info */}
-          <div>
-            <h3 className="text-lg font-semibold mb-4 text-white">Contact Us</h3>
-            <ul className="space-y-3">
+          <div className="lg:justify-self-end">
+            <h3 className="text-lg font-semibold mb-4 text-white border-b border-gray-700 pb-2 inline-block">Contact Us</h3>
+            <ul className="space-y-4">
               <li className="flex items-start gap-3 text-gray-400">
                 <MapPin size={20} className="text-red-500 mt-0.5 flex-shrink-0" />
-                <span>Sant Nagar Verka Amritsar</span>
+                <span className="text-sm sm:text-base">Sant Nagar Verka Amritsar</span>
               </li>
               <li className="flex items-center gap-3 text-gray-400">
                 <Phone size={20} className="text-red-500 flex-shrink-0" />
-                <a href="tel:+917696472517" className="hover:text-red-400 transition-colors">
+                <a href="tel:+917696472517" className="hover:text-red-400 transition-colors text-sm sm:text-base">
                   +91 7696472517
                 </a>
               </li>
               <li className="flex items-center gap-3 text-gray-400">
                 <Mail size={20} className="text-red-500 flex-shrink-0" />
-                <a href="mailto:support@foodies.com" className="hover:text-red-400 transition-colors">
+                <a href="mailto:support@foodies.com" className="hover:text-red-400 transition-colors text-sm sm:text-base">
                   support@foodies.com
                 </a>
               </li>
               <li className="flex items-start gap-3 text-gray-400">
                 <Clock size={20} className="text-red-500 mt-0.5 flex-shrink-0" />
-                <div>
+                <div className="text-sm sm:text-base">
                   <p>Mon - Sun: 10:00 AM - 11:00 PM</p>
                 </div>
               </li>
             </ul>
-          </div>
-
-          {/* Newsletter */}
-          <div>
-            <h3 className="text-lg font-semibold mb-4 text-white">Stay Updated</h3>
-            <p className="text-gray-400 mb-4 text-sm">
-              Subscribe to get special offers and updates
-            </p>
-            <form className="space-y-3">
-              <input
-                type="email"
-                placeholder="Your email"
-                className="w-full px-4 py-2 rounded-lg bg-gray-700 border border-gray-600 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-red-500 transition-all"
-              />
-              <motion.button
-                type="submit"
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                className="w-full px-4 py-2 rounded-lg bg-gradient-to-r from-red-500 to-orange-500 hover:from-red-600 hover:to-orange-600 text-white font-semibold transition-all duration-300 shadow-lg"
-              >
-                Subscribe
-              </motion.button>
-            </form>
           </div>
         </div>
 
@@ -153,4 +132,3 @@ const Footer = () => {
 };
 
 export default Footer;
-

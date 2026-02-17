@@ -447,52 +447,65 @@ export const cleartowishlist=async(req,res)=>{
   }
 }
 
-export const orderdetails=async(req,res)=>{
-   try{     
-  //  console.log(req.body);
-         const userId = req.user.id;
-        //  res.json({message:"Order placed successfully"})
-        // OrderSchema
-       const { address, Items, totalsum } = req.body;
-           if (!Items || Items.length === 0) {
-      return res.status(400).json({ message: "No items to place order" });
-    }
-         // 🔹 Transform frontend items → schema items
-    const orderItems = Items.map(item => ({
-      product: item._id,     // map _id → product
-      image:item.image_url,
-      size: item.size,
-      price: item.price,     // snapshot price
-      quantity: item.quantity,
-    }));
+export const orderdetails = async (req, res) => {
+  try {
+    const userId = req.user.id;
+    const { address, Items, totalsum } = req.body;
 
-    // Create Order 
-    const order = await Orders.create({
-      user:userId,
-      shippingAddress:{
-                name: address.name,
+    // 1. Create the Order 
+    // According to your error: your Orders Schema needs "name"
+    const order = new Orders({
+      user: userId,
+      shippingAddress: {
+        name: address.fullName || address.name, // Satisfies Orders Schema
         phone: address.phone,
-        address: address.street, // mapping street → address
+        address: address.street, 
         city: address.city,
         pincode: address.pincode,
       },
-      items:orderItems,
-      totalAmount:totalsum,
-      // paymentMethod: "COD" (default)
-      // paymentStatus: "PENDING" (defarult)
-      // orderStatus: "PLACED" (default)
+      items: Items.map(item => ({
+        product: item._id,
+        image: item.image_url,
+        size: item.size,
+        price: item.price,
+        quantity: item.quantity,
+      })),
+      totalAmount: totalsum,
     });
-    console.log(order);
-        return res.status(201).json({
+
+    await order.save(); // This was the line failing in your logs
+
+    // 2. Update the User's Saved Address
+    const user = await User.findById(userId);
+
+    if (user && !user.address) {
+      // According to your previous schema: User Schema needs "fullName"
+      user.address = {
+        fullName: address.fullName || address.name, // Satisfies User Schema
+        phone: address.phone,
+        street: address.street,
+        city: address.city,
+        pincode: address.pincode,
+      };
+      
+      await user.save();
+      console.log("User profile address updated");
+    }
+
+    const updatedUser = await User.findById(userId).select("-password");
+
+    return res.status(201).json({
       success: true,
       message: "Order placed successfully",
       order,
+      user: updatedUser,
     });
-  }catch (error) {
-    console.error("Place Order Error:", error);
-    res.status(500).json({ message: "Internal server error" });
+
+  } catch (error) {
+    console.error("Backend Error Detail:", error);
+    res.status(500).json({ message: error.message });
   }
-}
+};
 export const fetchTotalOrders = async (req, res) => {
   try {
     const userId = req.user.id; // from auth middleware
@@ -539,5 +552,39 @@ export const fetchorderdetails = async (req, res) => {
       success: false,
       message: "Failed to fetch order details",
     });
+  }
+};
+
+export const updateProfile = async (req, res) => {
+  try {
+    const userId = req.user.id;
+    const { name, email, address } = req.body;
+
+    const user = await User.findById(userId);
+    if (!user) return res.status(404).json({ message: "User not found" });
+
+    // Update fields if they are provided
+    if (name) user.name = name;
+    if (email) user.email = email;
+    if (address) {
+      user.address = {
+        fullName: address.fullName || address.name,
+        phone: address.phone,
+        street: address.street,
+        city: address.city,
+        pincode: address.pincode,
+      };
+    }
+
+    const updatedUser = await user.save();
+    const userResponse = await User.findById(userId).select("-password");
+
+    res.status(200).json({
+      success: true,
+      message: "Profile updated successfully",
+      user: userResponse,
+    });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
   }
 };
