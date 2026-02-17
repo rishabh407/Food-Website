@@ -1,15 +1,3 @@
-// import React from 'react'
-
-// const Profile = () => {
-//   return (
-//     <div>
-//       Hi i am profile.
-//     </div>
-//   )
-// }
-
-// export default Profile
-
 import React from "react";
 import { useAuth } from "../Context/AuthContext";
 import { User, Mail, Phone, MapPin, Edit } from "lucide-react";

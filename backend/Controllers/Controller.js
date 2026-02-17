@@ -5,7 +5,7 @@ import Product from "../Model/Product.js";
 import Session from "../Model/Session.js";
 import Cart from "../Model/Cart.js";
 import Wishlist from "../Model/Wishlist.js";
-import Orders from "../Model/Orders";
+import Orders from "../Model/Orders.js";
 const isProduction = process.env.NODE_ENV === "production";
 export const registeruser=async(req,res)=>{
     try{

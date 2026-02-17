@@ -3,7 +3,6 @@ import { motion, AnimatePresence } from "framer-motion";
 import { useState } from "react";
 import toast from "react-hot-toast";
 import { useAuth } from "../Context/AuthContext";
-// import { fetchCartAsync } from "../redux/cartActions";
 import { useDispatch } from "react-redux";
 import api from "../api/axiosInstance";
 const AuthModal = ({ isOpen, type, setAuthType, onClose }) => {

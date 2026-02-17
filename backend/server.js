@@ -12,9 +12,10 @@ const PORT = process.env.PORT || 5000;
 
 app.use(cors({
   origin: [
-    "http://localhost:5173",
-    "https://food-website-git-main-rishabh407s-projects.vercel.app",
-    "https://food-website-dun-beta.vercel.app/"
+    "http://localhost:5173"
+    // ,
+    // "https://food-website-git-main-rishabh407s-projects.vercel.app",
+    // "https://food-website-dun-beta.vercel.app/"
   ],
   methods: ["GET", "POST", "PUT", "DELETE"],
   credentials: true

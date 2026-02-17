@@ -1,15 +1,3 @@
-// import React from 'react'
-
-// const Orders = () => {
-//   return (
-//     <div>
-      
-//     </div>
-//   )
-// }
-
-// export default Orders
-
 import React, { useEffect, useState } from "react";
 import api, { API_BASE_URL } from "../api/axiosInstance";
 import { Package, Clock, MapPin } from "lucide-react";
@@ -109,12 +97,6 @@ const Orders = () => {
                       key={index}
                       className="flex items-center gap-4 py-4"
                     >
-                      {/* <img
-                        src={item.product?.image_url}
-                        alt={item.product?.name}
-                        className="w-16 h-16 object-cover rounded-lg border"
-                      /> */}
-
                       <img
   src={`${API_BASE_URL}${item.image}`}
   alt={item.product?.name}

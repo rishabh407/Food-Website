@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import {  Routes, Route, BrowserRouter, useFetcher} from "react-router-dom";
+import {  Routes, Route, BrowserRouter} from "react-router-dom";
 // Global Components
 import Navbar from "./Components/Navbar";
 import Footer from "./Components/Footer";  
@@ -21,7 +21,6 @@ import { fetchCartAsync } from './redux/cartActions';
 import api from './api/axiosInstance';
 import { fetchWishlistAsync } from './redux/wishlistactions';
 import Profile from './pages/Profile';
-import Account from './pages/Account';
 import Dashboard from './pages/Account';
 import Orders from './pages/Orders';
 const App = () => {
@@ -66,9 +65,6 @@ return (
         position="top-right"
         reverseOrder={false}
       />
-        {/* Navbar on all pages */}
-        {/* <Navbar/> */}
-      {/* Navbar always visible */}
       <Navbar
         onLoginClick={() => {
           setAuthType("login");
