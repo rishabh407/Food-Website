@@ -13,8 +13,7 @@ const Profile = () => {
     street: "",
     city: "",
     pincode: "",
-  });
-
+  })
   // Load user data into form when editing starts
   useEffect(() => {
     if (userdata) {
