@@ -25,3 +25,22 @@ router.get("/totalorders",authenticate, fetchTotalOrders);
 router.put("/user/profile",authenticate, updateProfile);
 
 export default router;
+
+// vercel.json file contents 
+
+// {
+//   "buildCommand": "npm run build",
+//   "outputDirectory": "dist",
+//   "devCommand": "npm run dev",
+//   "installCommand": "npm install",
+//   "framework": "vite",
+//   "rewrites": [
+//     {
+//       "source": "/(.*)",
+//       "destination": "/index.html"
+//     }
+//   ]
+// }
+
+// .env.development and .env.production 
+// # VITE_API_URL=https://food-api-efrg.onrender.com

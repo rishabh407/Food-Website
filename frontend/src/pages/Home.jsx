@@ -652,3 +652,5 @@ console.log(categoryItems);
 };
 
 export default Home;
+
+
