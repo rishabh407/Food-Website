@@ -55,8 +55,22 @@ const Home = () => {
   const category = "Beverages";
   const categoryTandooriAndBreads = "TandooriAndBreads";
   const { data: allItems = {}, isLoading } = useAllItems();
-  const { data: categoryItems = [] } = useCategoryItems(category);
-  const { data: categoryItemsTandooriAndBreads = [] } = useCategoryItems(categoryTandooriAndBreads);
+  // const { data: categoryItems = [] } = useCategoryItems(category);
+  // const { data: categoryItemsTandooriAndBreads = [] } = useCategoryItems(categoryTandooriAndBreads);
+
+const { data: rawCategoryItems } = useCategoryItems(category);
+const { data: rawTandooriItems } =
+  useCategoryItems(categoryTandooriAndBreads);
+
+// 🔒 Ensure arrays before map()
+const categoryItems = Array.isArray(rawCategoryItems)
+  ? rawCategoryItems
+  : rawCategoryItems?.data ?? [];
+
+const categoryItemsTandooriAndBreads = Array.isArray(rawTandooriItems)
+  ? rawTandooriItems
+  : rawTandooriItems?.data ?? [];
+
 
   const featuredItems = Array.isArray(allItems) ? allItems.slice(0, 8) : [];
 
